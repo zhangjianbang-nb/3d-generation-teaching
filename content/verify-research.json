@@ -1,0 +1,17 @@
+{
+  "site": "/home/whu/workspace/ai_workspace/3d-generation-teaching-20261113/site",
+  "profile": "L2",
+  "phase": "research",
+  "pass": true,
+  "counts": {
+    "directions": 8,
+    "algorithms": 28,
+    "papers": 49,
+    "theory": 0,
+    "stories": 0,
+    "assessments": 0
+  },
+  "errors": [],
+  "warnings": [],
+  "generated_at": "2026-11-13T09:27:46"
+}

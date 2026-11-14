@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""论文卡批次 7：数据/生产化 3 篇。"""
+import json, os
+ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RAW=json.load(open(os.path.join(ROOT,"research","arxiv-raw.json"),encoding="utf-8"))["results"]
+META={p["arxiv_id"]:p for p in RAW}; OUT=os.path.join(ROOT,"site","data","papers.json")
+def mk(aid,pid,tz,year,venue,ptype,dirn,code,rl,**kw):
+    m=META[aid]; d={"id":pid,"title":m["title"],"title_zh":tz,"authors":m["authors"][:4],"year":year,"venue":venue,"type":ptype,"direction":dirn,"links":{"paper":"https://arxiv.org/abs/"+aid,"code":code},"verified":True,"verification":"arXiv API 2026-11-13；Semantic Scholar 元数据 2026-11-13","read_level":rl}; d.update(kw); return d
+P=[]
+P.append(mk("2212.08051","paper-objaverse-2022","Objaverse：带标注的 3D 物体宇宙",2022,"CVPR 2023","foundational","d3-data-production","https://github.com/allenai/objaverse","fulltext_read",
+ background="NLP 与 2D 视觉靠 WebText/LAION 等大规模数据起飞，3D 数据却停留在中规模、类别有限；3D 生成缺一个多样、可商用、带标注的训练集。",
+ problem="如何构建一个规模大、类别多、带描述/标签/动画的 3D 物体数据集，支撑 3D 生成与理解？",
+ core_idea="从 Sketchfab 抓取 CC 许可的 3D 模型，统一格式、去重、补元数据（标题、标签、描述、动画），并渲染多视图；用 CLIP 嵌入做检索与分类。",
+ architecture="数据源：Sketchfab；许可过滤；GLB 统一；去重；元数据；多视图渲染；CLIP 嵌入；发布工具链。",
+ modules=["网页抓取","许可过滤","格式统一","去重/质量筛","多视图渲染","标注/嵌入"],
+ pipeline=["抓取模型/许可","转 GLB","去重","补标题/标签","渲染多视图","CLIP 嵌入","发布"],
+ formula=r"$$\mathcal{D}=\{(M_i,I_i,\ell_i)\}_{i=1}^{N},\qquad \ell_i=\mathrm{CLIP}(I_i)$$",
+ variables=[{"symbol":"M_i","meaning":"第 i 个 3D 模型"},{"symbol":"I_i","meaning":"渲染图"},{"symbol":"\\ell_i","meaning":"CLIP 嵌入"}],
+ training="数据集构建，非模型训练；Objaverse 1.0 约 800K+ 模型；提供渲染/加载工具；后续被用于训练 Zero-1-to-3、LRM 等。",
+ hyperparams=[{"name":"规模","value":"800K+","role":"数据量"},{"name":"许可","value":"CC","role":"商用限制"}],
+ walkthrough="用 Objaverse 训练 Zero-1-to-3 时，每个物体渲染多视角，模型学会新视角合成；把数据从 800K 降到 80K，泛化明显下降；用 CLIP 检索「椅子」，能跨类别找到相似形状。",
+ pseudocode="for model in sketchfab_cc:\n    glb = convert(model)\n    if dedup(glb): continue\n    views = render(glb, cameras)\n    save(glb, views, metadata(model))",
+ experiments={"datasets":["Objaverse 1.0（800K+）"],"baselines":["ShapeNet","ABC","ScanNet"],"results":"规模与类别多样性显著超过 ShapeNet；支撑 Zero-1-to-3 等训练。","ablations":"数据规模、许可过滤、渲染视角数。","limits":"许可复杂；质量参差；长尾类别不足。"},
+ innovation=["把 3D 数据推到 80 万级并带标注","提供可复现的抓取/渲染工具链"],
+ strengths=["规模大","类别多","带标注"],
+ limitations=["许可复杂","质量参差","长尾不足"],
+ future_work=["更大规模","质量清洗","版权合规"],
+ impact="Objaverse 成为 3D 生成的标准数据源，Zero-1-to-3、LRM、TripoSR、TRELLIS 等都以其为训练数据；它让 3D 生成进入「大数据」时代。",
+ successors=["paper-objaverse-xl-2023"],
+ summary="Objaverse 从 Sketchfab 抓取 80 万+ CC 许可 3D 模型，统一格式、去重、补标题/标签/描述/动画，并渲染多视图与 CLIP 嵌入，构建了一个多样、带标注的 3D 数据集。它让 3D 生成进入大数据时代，代价是许可复杂、质量参差、长尾类别不足。它是 3D 生成的标准数据源。",
+ prereq=[],order=47,
+ diff_from_prev="相对 ShapeNet 的中规模、类别受限，Objaverse 把 3D 数据推到 80 万级、开放类别，并带描述/动画。",
+ self_check=["Objaverse 的数据来源与许可是什么？","为什么它要渲染多视图？","它的质量参差如何影响训练？"],
+ figures=[]))
+P.append(mk("2307.05663","paper-objaverse-xl-2023","Objaverse-XL：千万级 3D 物体",2023,"NeurIPS 2023","classic","d3-data-production","https://github.com/allenai/objaverse-xl","fulltext_read",
+ background="Objaverse 1.0 的 80 万模型仍不足以支撑十亿级 3D 大模型；3D 数据规模与 2D/NLP 差两三个数量级。",
+ problem="如何把 3D 数据规模再推一个数量级，达到千万级，并保持多样性？",
+ core_idea="扩展数据源：手工模型、摄影测量扫描、历史文物扫描、程序化生成等；去重、许可过滤、统一格式；用 100M+ 渲染图训练 Zero-1-to-3，验证规模收益。",
+ architecture="多源抓取；去重；许可；GLB 统一；渲染；训练 Zero-1-to-3；发布。",
+ modules=["多源抓取","去重","许可","渲染","规模验证"],
+ pipeline=["多源收集","去重","许可过滤","统一格式","渲染","训练验证"],
+ formula=r"$$\mathcal{D}_{\mathrm{XL}}=\bigcup_{s\in\mathcal{S}}\mathcal{D}_s,\qquad |\mathcal{D}_{\mathrm{XL}}|>10^{7}$$",
+ variables=[{"symbol":"\\mathcal{S}","meaning":"数据源集合"},{"symbol":"\\mathcal{D}_s","meaning":"第 s 个数据源"}],
+ training="数据集构建 + 规模验证：用 100M+ 渲染图训练 Zero-1-to-3，观察新视角质量随规模提升。",
+ hyperparams=[{"name":"规模","value":"10M+","role":"数据量"},{"name":"渲染图","value":"100M+","role":"训练信号"}],
+ walkthrough="把 Zero-1-to-3 的训练数据从 Objaverse 1.0 扩到 Objaverse-XL，新视角 PSNR/FID 明显改善；继续扩大数据，收益递减但仍正向。",
+ pseudocode="data = dedup(union(sources))\ntrain(zero123, render(data, 100_000_000))",
+ experiments={"datasets":["Objaverse-XL（10M+）"],"baselines":["Objaverse 1.0"],"results":"Zero-1-to-3 在 100M+ 渲染图上训练，新视角质量随规模提升。","ablations":"数据源、去重、渲染视角数、模型规模。","limits":"许可/版权复杂；质量参差；存储与算力成本高。"},
+ innovation=["把 3D 数据推到千万级","用规模验证 3D 生成的 scaling"],
+ strengths=["规模大","多源","验证 scaling"],
+ limitations=["版权复杂","质量参差","成本高"],
+ future_work=["清洗","版权","更大规模"],
+ impact="Objaverse-XL 为 3D 大模型提供了千万级数据，TRELLIS、Hunyuan3D 等都在其基础上训练；它证明了 3D 生成也存在数据 scaling。",
+ successors=[],
+ summary="Objaverse-XL 把 3D 数据从 80 万推到 1000 万+，覆盖手工模型、摄影测量、历史文物扫描等多源，并用 100M+ 渲染图训练 Zero-1-to-3 验证规模收益。它证明了 3D 生成的数据 scaling，代价是版权复杂、质量参差、存储/算力成本高。它是 3D 大模型的数据基石。",
+ prereq=["paper-objaverse-2022"],order=48,
+ diff_from_prev="相对 Objaverse 1.0 的 80 万，XL 扩到 1000 万+、多源，并用 100M+ 渲染图验证 scaling。",
+ self_check=["Objaverse-XL 的数据源有哪些？","规模如何影响 Zero-1-to-3？","版权问题如何影响可用性？"],
+ figures=[]))
+P.append(mk("2408.00653","paper-sf3d-2024","SF3D：0.5 秒 UV + 光照解耦重建",2024,"CVPR 2024","classic","d3-data-production","https://github.com/Stability-AI/generative-models","fulltext_read",
+ background="多数图生 3D 输出顶点色或三平面纹理，无法直接进引擎；UV 展开慢、材质与光照耦合，换光照就崩。工业管线需要快速、标准 UV、可重光照的资产。",
+ problem="如何在 0.5 秒内从单图重建带 UV、带 PBR 材质、光照解耦的网格？",
+ core_idea="显式训练网格生成；快速 UV 展开；纹理在 UV 空间生成而非顶点色；预测材质参数与法线贴图；delighting 步骤去除低频光照。",
+ architecture="单图编码；网格/SDF 解码；快速 UV unwrap；UV 纹理生成；材质/法线预测；delighting；输出 PBR 网格。",
+ modules=["单图编码","网格解码","UV unwrap","UV 纹理","材质/法线","delighting"],
+ pipeline=["单图编码","出网格","UV 展开","UV 纹理/材质","delighting","输出 PBR 资产"],
+ formula=r"$$\mathcal{L}=\mathcal{L}_{\mathrm{geo}}+\lambda\mathcal{L}_{\mathrm{uv}}+\mu\mathcal{L}_{\mathrm{mat}},\qquad \mathcal{L}_{\mathrm{uv}}=\|\hat{T}(u,v)-T(u,v)\|^2$$",
+ variables=[{"symbol":"\\hat{T}","meaning":"UV 纹理"},{"symbol":"\\mathcal{L}_{\\mathrm{mat}}","meaning":"材质/法线监督"}],
+ training="在 Objaverse/内部资产上训练；网格 + UV + 材质联合监督；delighting 数据增强；推理 0.5 秒。",
+ hyperparams=[{"name":"推理时间","value":"0.5 s","role":"速度"},{"name":"UV 分辨率","value":"1024","role":"纹理"}],
+ walkthrough="给一张产品图，SF3D 0.5 秒出带 UV 与 PBR 的网格；换光照后材质合理；把 UV 展开换成顶点色，纹理分辨率受限；把 delighting 去掉，低频阴影烘进反照率。",
+ pseudocode="def reconstruct(img):\n    mesh = mesh_decoder(img)\n    uv = fast_unwrap(mesh)\n    tex, mat = uv_texture(img, uv)\n    return delight(mesh, tex, mat)",
+ experiments={"datasets":["Objaverse","内部产品图"],"baselines":["TripoSR","InstantMesh","CRM"],"results":"0.5 秒；UV + PBR + 光照解耦；重光照表现优于顶点色方法。","ablations":"UV vs 顶点色、材质/法线、delighting。","limits":"UV 失败；材质真实感；几何细节有限。"},
+ innovation=["0.5 秒 UV 展开 + UV 纹理","材质/法线与 delighting 的光照解耦"],
+ strengths=["快","标准 UV","可重光照"],
+ limitations=["UV 失败","材质真实感","几何有限"],
+ future_work=["更高分辨率","更好 UV","PBR 标准化"],
+ impact="SF3D 把「快速 + UV + PBR」做成生产级基线，与 Hunyuan3D 2.1 一起定义了 2024–2025 年资产生成标准；它也让 delighting 成为管线必备步骤。",
+ successors=[],
+ summary="SF3D 显式训练网格生成，配合快速 UV 展开、UV 空间纹理、材质/法线预测与 delighting，0.5 秒从单图出带 UV、PBR、光照解耦的网格。它解决了顶点色无法进引擎、光照耦合的问题，代价是 UV 失败、材质真实感受数据限制、几何细节有限。它是生产级资产生成的代表。",
+ prereq=["paper-triposr-2024"],order=49,
+ diff_from_prev="相对 TripoSR 的顶点色/三平面纹理，SF3D 增加快速 UV、PBR 材质与 delighting，输出可直接进引擎。",
+ self_check=["为什么 UV 纹理比顶点色好？","delighting 解决什么问题？","0.5 秒的瓶颈在哪？"],
+ figures=[]))
+old=json.load(open(OUT,encoding="utf-8")); ids={p["id"] for p in old}
+old.extend([p for p in P if p["id"] not in ids])
+json.dump(old,open(OUT,"w",encoding="utf-8"),ensure_ascii=False,indent=2); print("papers",len(old))

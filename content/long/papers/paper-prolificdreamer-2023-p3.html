@@ -1,0 +1,57 @@
+<h3>一 · 目标函数：从单点回归到 KL 最小化</h3>
+<p>VSD 的目标函数不是凭空写出来的，而是从「把 3D 参数视为分布」这一建模选择直接推出来的。设 3D 参数为 <span class="inline-math">θ</span>，其诱导的渲染图像分布为 <span class="inline-math">q_0(x_0|θ)</span>；把 <span class="inline-math">θ</span> 本身看作随机变量，就得到渲染分布 <span class="inline-math">q(x_0|y) = ∫ q_0(x_0|θ) q(θ|y) dθ</span>。文本条件扩散模型给出的则是 <span class="inline-math">p(x_0|y)</span>。VSD 要做的，是让 <span class="inline-math">q(θ|y)</span> 这一「参数分布」经过渲染映射后逼近 <span class="inline-math">p(x_0|y)</span>，而不是让某个单一 <span class="inline-math">θ</span> 对应的图像去逼近某个样本。</p>
+<p>于是优化目标写成两个分布之间的 KL：</p>
+<div class="formula">$$\min_{q(\theta|y)}\ \mathrm{KL}\big(q(x_0|y)\,\|\,p(x_0|y)\big)$$</div>
+<p>直接对这个 KL 求 <span class="inline-math">θ</span> 的梯度不可行，因为 <span class="inline-math">q(x_0|y)</span> 的得分函数未知。变分得分蒸馏的关键一步是引入一个可学习的「粒子得分」来近似 <span class="inline-math">∇_{x_t} log q(x_t|y)</span>，把 KL 的梯度改写成两个得分之差。对扩散噪声层级 <span class="inline-math">t</span> 展开后，KL 对 <span class="inline-math">θ</span> 的梯度就落到渲染图像上，再经链式法则传回 3D 参数。</p>
+<p>这里有一个容易被忽略的机制细节：KL 的梯度是对 <span class="inline-math">q(x_0|y)</span> 取的，而 <span class="inline-math">q(x_0|y)</span> 是 <span class="inline-math">q(θ|y)</span> 经渲染映射后的推前分布（push-forward）。这意味着梯度不是对单个 <span class="inline-math">θ</span> 的「纠正」，而是对整批粒子的「分布级纠正」——每个粒子收到的梯度都含有「当前这批粒子整体偏离文本分布多少」的信息。这正是 VSD 与 SDS 在目标层面的分水岭：SDS 的梯度只依赖当前单点渲染图与扩散得分的差，VSD 的梯度还依赖粒子模型对「当前分布」的估计。</p>
+<p>失败模式也在这里埋下：如果粒子模型对 <span class="inline-math">q(x_t|y)</span> 的估计有偏，KL 梯度就会把 3D 参数往错误方向推。粒子模型欠拟合时，减项偏小，VSD 退化为接近 SDS 的行为，多样性收益消失；粒子模型过拟合到少数渲染图时，减项偏大且噪声高，梯度方差上升，3D 参数出现纹理震荡。这两种失败都不表现为 loss 爆炸，而是表现为「结果看起来还行但多样性没起来」或「细节反复抖动」，排查成本高。</p>
+
+<h3>二 · 变量含义与梯度的逐项拆解</h3>
+<p>VSD 梯度公式的每一项都对应一个具体的工程对象，逐个拆开看：</p>
+<div class="formula">$$\nabla_\theta\mathcal{L}_{\mathrm{VSD}}=\mathbb{E}\!\left[w(t)\big(\epsilon_\phi(x_t;y,t)-\epsilon_\psi(x_t;c,t)\big)\frac{\partial x}{\partial\theta}\right]$$</div>
+<ul>
+<li><span class="inline-math">θ</span>：3D 表示的可优化参数。NeRF 阶段是密度与颜色网络的权重（可含哈希编码等特征参数），网格阶段是顶点位移、纹理贴图或可微渲染器的材质参数。</li>
+<li><span class="inline-math">x</span>：由 <span class="inline-math">θ</span> 经可微渲染得到的图像，<span class="inline-math">∂x/∂θ</span> 是可微渲染器回传的雅可比，把图像空间的梯度转成参数空间的梯度。</li>
+<li><span class="inline-math">x_t</span>：对 <span class="inline-math">x</span> 加噪到层级 <span class="inline-math">t</span> 的结果，<span class="inline-math">x_t = α_t x + σ_t ε</span>，<span class="inline-math">ε</span> 为采样噪声。</li>
+<li><span class="inline-math">ε_φ(x_t;y,t)</span>：冻结的预训练扩散模型（Stable Diffusion）在文本条件 <span class="inline-math">y</span> 下预测的噪声，代表「文本分布 <span class="inline-math">p</span> 的得分」。</li>
+<li><span class="inline-math">ε_ψ(x_t;c,t)</span>：粒子模型（对渲染图训练的 LoRA）预测的噪声，代表「当前 3D 分布 <span class="inline-math">q</span> 的得分」。<span class="inline-math">c</span> 是粒子模型自己的条件输入，与 <span class="inline-math">y</span> 在形式上对应但走的是另一条通路。</li>
+<li><span class="inline-math">w(t)</span>：噪声层级权重，控制不同 <span class="inline-math">t</span> 对梯度的贡献。低 <span class="inline-math">t</span> 管细节与纹理，高 <span class="inline-math">t</span> 管全局结构与语义对齐。</li>
+</ul>
+<p>两个噪声预测之差 <span class="inline-math">ε_φ − ε_ψ</span> 是梯度的核心。它的符号决定方向：当冻结模型认为「这里应该有更多某类结构」而粒子模型认为「当前分布已经如此」时，差值为正，梯度推动 <span class="inline-math">θ</span> 朝冻结模型的方向移动；反之则把参数拉回粒子分布已覆盖的区域。换句话说，减项起到「去偏」作用——它扣掉了当前 3D 分布自身已经解释的部分，只留下「文本分布相对当前分布多出来的那部分」作为驱动信号。</p>
+<p>一个具体的机制后果：<span class="inline-math">w(t)</span> 的设置直接决定 VSD 是「结构优先」还是「纹理优先」。若 <span class="inline-math">w(t)</span> 在高 <span class="inline-math">t</span> 段权重不足，3D 参数会先被低 <span class="inline-math">t</span> 的纹理梯度牵着走，几何在大尺度上还没收敛就开始堆细节，结果是「远看糊、近看碎」。这是多阶段配方要解决的核心问题之一，也是超参敏感性的来源。</p>
+
+<h3>三 · 采样与训练循环：粒子模型和 3D 参数如何交替更新</h3>
+<p>VSD 的训练不是单次前向加反传，而是一个双层循环：外层更新 3D 参数，内层用渲染图训练粒子 LoRA。伪代码思路如下：</p>
+<ul>
+<li>初始化 3D 参数 <span class="inline-math">θ</span>（NeRF 或网格）与粒子 LoRA 权重 <span class="inline-math">ψ</span>；冻结主扩散模型 <span class="inline-math">φ</span>。</li>
+<li>每个外层步：从当前 <span class="inline-math">θ</span> 渲染一批视角图像 <span class="inline-math">{x_i}</span>；采样噪声层级 <span class="inline-math">t</span> 与噪声 <span class="inline-math">ε</span>，构造 <span class="inline-math">x_t</span>。</li>
+<li>用这批 <span class="inline-math">(x_t, t, c)</span> 对粒子 LoRA 做若干步去噪训练，使 <span class="inline-math">ε_ψ</span> 拟合当前渲染分布。</li>
+<li>用更新后的 <span class="inline-math">ε_ψ</span> 与冻结的 <span class="inline-math">ε_φ</span> 计算 VSD 梯度，经 <span class="inline-math">∂x/∂θ</span> 回传，更新 <span class="inline-math">θ</span>。</li>
+<li>按阶段切换 3D 表示（NeRF 到网格），并在网格阶段调整渲染分辨率与视角采样策略。</li>
+</ul>
+<p>这个循环的关键在于「粒子模型必须跟得上 3D 参数的变化」。若内层训练步数太少，<span class="inline-math">ε_ψ</span> 滞后于当前分布，减项失真，梯度退化为带噪的 SDS；若内层步数太多，粒子模型把当前这批渲染图记得太死，减项过大，梯度被压扁，3D 参数几乎不动。工程上这表现为一个窄的训练窗口：内层步数偏小则多样性不涨，偏大则收敛变慢甚至停滞。这是 VSD「超参多」这一局限的具体落点，不是泛泛而谈的调参负担。</p>
+<p>采样层面还有两个机制细节。其一是视角采样：每步渲染的视角集合决定了粒子模型看到的分布切片，视角太少会让 <span class="inline-math">ε_ψ</span> 只覆盖局部视角，减项在未见视角上失准，3D 结果出现「正面精致、侧面崩坏」。其二是 <span class="inline-math">t</span> 的采样分布：若 <span class="inline-math">t</span> 集中在低段，几何结构得不到足够的高 <span class="inline-math">t</span> 梯度，NeRF 阶段的密度场会收敛到模糊的团块，后续网格阶段难以补救。</p>
+<p>系统代价在这里体现得最直接：每个外层步都要渲染多视角、对 LoRA 做多步去噪、再跑一次冻结扩散的前向。显存上要同时容纳冻结主模型、粒子 LoRA 与可微渲染器；时间上每资产数小时的量级主要来自这个嵌套循环，而不是单次扩散采样。粒子数增加会线性抬高渲染与内层训练的开销，这也是消融中粒子数成为敏感项的原因。</p>
+
+<h3>四 · 训练配方与关键超参：多阶段如何分工</h3>
+<p>ProlificDreamer 的配方是「NeRF 阶段 + 网格精修」的两段式，每段内部再按分辨率或视角策略细分。两段共享同一个 VSD 梯度形式，但承担不同的职责：</p>
+<table class="mini">
+<thead>
+<tr><th>阶段</th><th>3D 表示</th><th>主要职责</th><th>关键超参</th></tr>
+</thead>
+<tbody>
+<tr><td>NeRF 阶段</td><td>神经辐射场（含特征编码）</td><td>确立全局几何与语义布局，高 <span class="inline-math">t</span> 梯度主导</td><td>粒子数、LoRA rank、<span class="inline-math">w(t)</span> 形状、视角数</td></tr>
+<tr><td>网格精修</td><td>网格 + 可微渲染</td><td>细化表面与纹理，低 <span class="inline-math">t</span> 梯度主导</td><td>纹理分辨率、内层步数、学习率衰减</td></tr>
+</tbody>
+</table>
+<p>多阶段的意义不只是「先粗后细」，而是让粒子模型在每段内适配该段的渲染分布。NeRF 渲染的图像与网格渲染的图像在噪声统计、边缘锐度上不同，若用同一套粒子 LoRA 跨段复用而不重训，减项会系统性地偏置，网格阶段出现「纹理被拉平」的现象。配方上通常在两段交界处重置或部分重置粒子模型，让它重新拟合新表示下的分布。</p>
+<p>关键超参中，LoRA rank 决定粒子模型表达分布的能力：rank 太小，<span class="inline-math">ε_ψ</span> 只能捕捉粗粒度的分布差异，减项欠拟合，VSD 趋近 SDS；rank 太大，粒子模型容量足以记住单张渲染图，减项过拟合，梯度方差上升。粒子数则决定分布估计的样本量：粒子太少，<span class="inline-math">q</span> 的估计噪声大，多样性收益不稳定；粒子太多，显存与时间开销按比例上升。消融中这两项都是敏感项，说明它们不是「调大就好」的单调旋钮，而是存在一个与任务复杂度匹配的区间。</p>
+<p>一个具体的失败模式：在 NeRF 阶段把 <span class="inline-math">w(t)</span> 的低 <span class="inline-math">t</span> 权重调得过高，几何尚未定型时纹理梯度就开始主导，NeRF 的密度场会围绕高频纹理过拟合，出现「表面布满伪影、轮廓不清」的结果。进入网格阶段后，这些伪影被烘焙进纹理，精修阶段只能局部修补，无法恢复正确的几何。这类失败在单阶段配方里不明显，在多阶段配方里会被放大，因为阶段间的表示切换会把前一阶段的偏差固化下来。</p>
+
+<h3>五 · 数值玩具例子：一次 VSD 梯度更新的手算</h3>
+<p>为了看清两个得分之差如何驱动参数，构造一个一维标量玩具例子。设 3D 参数只有一个标量 <span class="inline-math">θ</span>，渲染映射为 <span class="inline-math">x = θ</span>（即 <span class="inline-math">∂x/∂θ = 1</span>）。文本分布设为 <span class="inline-math">p = N(2, 1)</span>，当前 3D 分布设为 <span class="inline-math">q = N(0, 1)</span>。取某个中间噪声层级，把两个分布的得分近似为各自均值处的一阶线性形式：冻结模型给出 <span class="inline-math">ε_φ(x) = -(x - 2)</span>，粒子模型给出 <span class="inline-math">ε_ψ(x) = -(x - 0)</span>。取 <span class="inline-math">w(t) = 1</span>。</p>
+<p>在 <span class="inline-math">x = θ = 0</span> 处计算：<span class="inline-math">ε_φ(0) = 2</span>，<span class="inline-math">ε_ψ(0) = 0</span>，差值为 <span class="inline-math">2 - 0 = 2</span>。梯度为 <span class="inline-math">2 × 1 = 2</span>，方向为正，<span class="inline-math">θ</span> 向 <span class="inline-math">p</span> 的均值 2 移动。若学习率为 0.1，一步后 <span class="inline-math">θ = 0.2</span>。此时 <span class="inline-math">ε_φ(0.2) = 1.8</span>，<span class="inline-math">ε_ψ(0.2) = -0.2</span>，差值 <span class="inline-math">2.0</span>，梯度仍为 2——注意差值没有随 <span class="inline-math">θ</span> 移动而缩小，因为粒子模型的均值还停在 0，减项在「追」当前分布。</p>
+<p>这正是 VSD 与 SDS 的分野在数值上的体现。若用 SDS，减项是固定的采样噪声 <span class="inline-math">ε</span>，梯度期望为 <span class="inline-math">ε_φ(x) - ε</span>，在 <span class="inline-math">x=0</span> 处期望为 2，与 VSD 相同；但随着 <span class="inline-math">θ</span> 靠近 2，SDS 的梯度期望趋近 0，只把单点拉到 <span class="inline-math">p</span> 的均值。VSD 则不同：粒子模型在内层被当前渲染图训练，<span class="inline-math">ε_ψ</span> 的均值会逐步从 0 移向当前 <span class="inline-math">θ</span> 所在位置。假设内层训练后 <span class="inline-math">ε_ψ</span> 的均值移到 <span class="inline-math">θ</span> 本身，则减项变为 <span class="inline-math">-(x - θ)</span>，在 <span class="inline-math">x = θ</span> 处为 0，梯度变为 <span class="inline-math">ε_φ(θ) = -(θ - 2)</span>。此时 <span class="inline-math">θ</span> 每步按 <span class="inline-math">-(θ-2)</span> 更新，收敛到 2，且收敛速度由 <span class="inline-math">w(t)</span> 与学习率共同决定。</p>
+<p>把玩具例子推到分布层面：若初始粒子集合是 <span class="inline-math">{θ_1, θ_2} = {-1, 1}</span>，两个粒子各自收到 <span class="inline-math">ε_φ(θ_i) - ε_ψ(θ_i)</span> 的梯度。粒子模型拟合的是这两个点的混合分布，减项在两点之间给出非零值，把两个粒子分别往 2 的两侧推，最终形成围绕 2 的一个分布而不是坍缩到单点。这就是「分布匹配」在数值上的最小可见形态：SDS 会把两个粒子都拉到同一个均值，VSD 保留它们的间距，间距由粒子模型对 <span class="inline-math">q</span> 的估计决定。</p>
+<p>玩具例子的工程含义是：VSD 的收敛行为对「粒子模型多快跟上当前分布」高度敏感。内层更新不足时，减项滞后，梯度长期停留在 <span class="inline-math">ε_φ - ε_ψ(旧)</span> 上，等效于一个带偏置的 SDS，偏置方向由旧分布与新分布之差决定；内层更新过度时，减项精确等于当前分布得分，梯度退化为「只朝文本分布均值走」，多样性又被压掉。真实训练里这个平衡点随阶段、分辨率、视角数变化，所以配方必须分阶段调内层步数，而不能全局固定一个值。</p>
+<p class="paper-line">对应：papers/paper-prolificdreamer-2023 · 第 3/5 部分</p>

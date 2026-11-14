@@ -1,0 +1,47 @@
+<h3>一 · 从缩写到机制：N–Z 词条的检索路径</h3>
+<p>术语表后半段看起来是字母序的清单，实际是一条技术演进链。检索时不要按首字母硬背，而应按“表示—监督—产出”三段定位：表示决定内存与渲染路径，监督决定梯度从哪来，产出决定下游能不能直接用。NeRF 属于辐射场表示，监督来自多视图光度一致性；NeuS 把同一套体积渲染搬到 SDF 上，用无偏权重把密度换成表面；3DGS 把表示换成显式高斯基元，渲染从沿射线积分变成按深度排序的 splatting；SLAT 与结构化潜变量则把“表示”抬到潜空间，让扩散模型在压缩后的结构上工作。一个词条落在哪一段，决定了它后面接的是优化式蒸馏、多视图扩散还是前馈大模型。</p>
+<p>具体机制上，可以把每个词条拆成四元组：表示（radiance field / SDF / Gaussian / triplane / mesh / latent）、渲染器（volume rendering / rasterization / differentiable mesh）、监督信号（多视图图像、2D 扩散先验、单图输入、文本）、输出类型（隐式场、高斯集、网格、PBR 材质）。这个四元组就是速查表的列。举例：DreamGaussian 的四元组是“高斯 + splatting + 2D 扩散先验 + 高斯集，再转网格”，所以它在“优化式蒸馏”与“原生 3D 表示”之间；InstantMesh 是“三平面/稀疏视图 LRM + 前馈 + 单图 + 网格”，落在第七卷的前馈工厂。用四元组检索，比记论文标题更稳。</p>
+<p>失败模式在于把“表示”和“监督”混为一谈。SDS 不是一种 3D 表示，它是把 2D 扩散模型的 score 抬到 3D 参数的蒸馏损失；VSD 也不是新表示，而是把 SDS 的单点 score 换成粒子近似下的分布 score，缓解过饱和与多样性塌缩。若把 SDS 当成表示去查渲染器，就会找不到对应条目。系统代价上，按四元组建索引需要人工标注每个词条的四个字段，词条数量在几十条量级时维护成本可控，但一旦跨卷引用增多，字段不一致会成为检索噪声源。</p>
+<div class="formula">$$\mathcal{L}_{\text{SDS}}=\mathbb{E}_{t,\epsilon}\left[w(t)\,\|\epsilon-\epsilon_\theta(\mathbf{x}_t;y,t)\|\right],\quad \mathbf{x}=\text{Render}(\Theta)$$</div>
+<p>公式里 Θ 是 3D 参数，Render 是任意可微渲染器。它说明 SDS 对表示是中立的：NeRF、高斯、网格都能接，只要渲染可微。这也是词条跨卷聚合的根因。</p>
+
+<h3>二 · 对比表：五组容易混淆的词条</h3>
+<p>第一组是 NeRF 与 NeuS。两者都用体积渲染，但 NeRF 的密度场没有零水平集约束，表面是等值面的副产品；NeuS 用 SDF 的零水平集定义表面，并通过无偏权重把体积积分退化为表面积分。代价是 NeuS 需要更密的采样与更好的初始化，否则 SDF 会在无纹理区域漂移。例子：同样多视图输入，NeRF 能给出新视图，但提取网格常带絮状外壳；NeuS 提取的网格更干净，却对学习率与 eikonal 正则更敏感。</p>
+<p>第二组是 3DGS 与 Instant NGP。前者是显式基元加光栅化，后者是哈希编码加小型 MLP 的隐式场。3DGS 的训练与渲染都快，但显存随高斯数量线性增长，且排序与致密化策略决定质量；Instant NGP 把高频细节压进多分辨率哈希表，显存可控但需要沿射线采样。系统代价上，3DGS 的失败模式是致密化过度导致显存爆掉，Instant NGP 的失败模式是哈希冲突带来高频噪声。</p>
+<p>第三组是 DreamFusion 与 ProlificDreamer。前者是 SDS 的工程化，后者是 VSD 的代表。SDS 用单点 score 近似后验，容易过饱和、几何扁平；VSD 引入粒子近似，把 score 变成分布层面的梯度，提升多样性与保真度，代价是每步要维护多个粒子、显存与算力上升。例子：同一文本提示，SDS 常给出高对比但结构模糊的结果，VSD 在多次采样下结构更稳。</p>
+<p>第四组是 Zero-1-to-3 与 SyncDreamer。两者都做单图到多视图，前者用视角条件扩散直接生成新视图，后者显式建模多视图一致性。Zero-1-to-3 的失败模式是背面几何与输入视图不一致；SyncDreamer 用同步生成约束一致性，代价是采样步数与显存更高。</p>
+<p>第五组是 MeshGPT 与 MeshAnything。前者用 decoder-only transformer 自回归生成三角形序列，后者面向艺术家网格的重拓扑，V2 引入相邻网格 tokenization 降低序列长度。共同代价是序列长度随面数增长，长序列推理慢且易漂移；例子：高面数输入直接 token 化会超出上下文窗口，需要先简化或分块。</p>
+<table class="mini"><thead><tr><th>词条对</th><th>表示</th><th>监督</th><th>主要代价</th><th>典型失败</th></tr></thead><tbody><tr><td>NeRF / NeuS</td><td>密度场 / SDF</td><td>多视图光度</td><td>采样密度、eikonal 正则</td><td>絮状外壳 / 表面漂移</td></tr><tr><td>3DGS / Instant NGP</td><td>高斯基元 / 哈希隐式</td><td>多视图光度</td><td>显存线性 / 哈希冲突</td><td>致密化爆显存 / 高频噪声</td></tr><tr><td>DreamFusion / ProlificDreamer</td><td>任意可微表示</td><td>2D 扩散先验</td><td>粒子维护 / 每步多采样</td><td>过饱和 / 多样性塌缩</td></tr><tr><td>Zero-1-to-3 / SyncDreamer</td><td>视图扩散</td><td>单图条件</td><td>一致性约束算力</td><td>背面不一致 / 采样慢</td></tr><tr><td>MeshGPT / MeshAnything V2</td><td>三角形序列</td><td>网格语料</td><td>序列长度</td><td>超上下文 / 自回归漂移</td></tr></tbody></table>
+
+<h3>三 · 自测题：用四元组反推词条</h3>
+<p>自测不考记忆，考反推。给一个四元组，要求说出最可能的词条族，并指出一个系统代价。下面五题按难度递进，答案不写死，只看推理链是否闭合。</p>
+<ul>
+<li>题一：表示是显式高斯基元，渲染是光栅化，监督是多视图图像，输出可直接转网格。问：它属于哪一卷，转网格时最容易丢什么？提示：致密化与排序决定表面连续性，转网格会丢高频外观。</li>
+<li>题二：表示是 SDF，渲染是体积渲染且权重无偏，监督是多视图图像。问：它和 NeRF 的关键差别在哪一步？提示：零水平集与无偏权重，eikonal 正则把 SDF 拉成距离场。</li>
+<li>题三：监督是 2D 扩散先验，表示任意可微，损失是 score 蒸馏。问：SDS 与 VSD 的差别落在公式哪一项？提示：单点 score 与粒子分布 score。</li>
+<li>题四：输入单图，输出多视图一致图像，再走重建。问：Zero-1-to-3 与 SyncDreamer 的一致性来源有何不同？提示：视角条件 vs 同步生成。</li>
+<li>题五：输出是三角形序列，用 decoder-only transformer。问：面数翻倍时序列长度如何变，工程上怎么缓解？提示：相邻 tokenization 与简化分块。</li>
+</ul>
+<p>每题的评分点是“机制—代价—例子”三件套是否齐全。只答词条名不给代价，视为未通过。系统代价的例子：题一若答不出显存线性增长，就无法解释为什么高面数场景要先分块；题五若答不出上下文窗口，就无法解释为什么 MeshAnything V2 要改 tokenization。</p>
+<div class="formula">$$\text{SeqLen}\approx\alpha\cdot F+\beta,\quad \text{Mem}_{\text{3DGS}}\approx\gamma\cdot N_{\text{gauss}}$$</div>
+<p>两个线性关系是自测的锚点：面数 F 与序列长度、高斯数 N 与显存。它们不是精确常数，但方向决定了工程取舍：先简化还是先分块，先剪枝还是先降分辨率。</p>
+
+<h3>四 · 清单：生产化前的检查项</h3>
+<p>词条最终要落到管线。下面清单按“输入—表示—监督—产出—评测”排列，每项都对应 N–Z 里的具体条目，不写空话。</p>
+<ul>
+<li>输入侧：单图还是多视图？单图走 LRM/TripoSR/InstantMesh 一类前馈，多视图走 NeRF/NeuS/3DGS 优化。检查相机内参是否一致，否则多视图扩散的视角条件会错位。</li>
+<li>表示侧：隐式场还是显式基元？隐式场便于提取网格但采样慢，显式基元渲染快但显存线性。检查是否需要 PBR：Hunyuan3D 2.1 与 SF3D 涉及 UV 展开与光照解耦，普通辐射场不直接给材质。</li>
+<li>监督侧：光度、2D 先验还是 3D 语料？SDS/VSD 依赖 2D 扩散，容易过饱和；前馈大模型依赖 Objaverse/Objaverse-XL 一类 3D 语料，泛化受语料分布限制。</li>
+<li>产出侧：网格、高斯还是潜变量？网格要检查拓扑与 UV，高斯要检查致密化阈值，潜变量要检查解码器版本。</li>
+<li>评测侧：新视图 PSNR 只覆盖重建，生成要看多视图一致性与几何完整性；物理交互看 PhysDreamer 一类视频生成监督，场景看 Text2Room/WorldGen 的可遍历性。</li>
+</ul>
+<p>具体机制上，检查项要能触发动作。比如“表示侧是否需要 PBR”触发的是：若下游要进引擎，就必须走 Hunyuan3D 2.1 或 SF3D 的 UV 与光照解耦路径，否则辐射场烘焙的外观在换光照时会崩。失败模式是清单被当成勾选框：勾了“有网格”却没检查流形与自交，导入引擎后法线翻转。系统代价是每增加一个检查项就增加一次人工或自动验证，自动化验证需要渲染对照图，算力成本随视图数上升。</p>
+<p>例子：一个单图到资产的管线，输入一张产品图，走 InstantMesh 出网格，再走重拓扑。清单会拦住两个坑：一是单图背面是猜的，多视图一致性不足时几何会鼓包；二是 UV 展开缺失导致贴图拉伸。前者用 SyncDreamer/MVDream 一类多视图约束缓解，后者用 SF3D 的 UV 展开补齐。</p>
+
+<h3>五 · 延伸阅读的读法：按卷而不是按字母</h3>
+<p>延伸阅读若按字母读，会把 NeRF 与 NeuS 读成两个孤立条目；按卷读，才能看到“同一渲染器换表示”的主线。第一卷讲可微渲染如何把 2D 变 3D，是 NeRF/NeuS/3DGS 的共同底座；第二卷讲哈希编码与 3DGS，是 Instant NGP 与 3DGS 的工程细节；第三卷讲 SDF 与干净表面，是 NeuS 的深化；第四卷讲三平面、点云与隐式函数，是 EG3D、GET3D、Point-E、Shap-E 的表示谱系；第五卷讲 SDS 家族，是 DreamFusion、Magic3D、ProlificDreamer、Fantasia3D、TextMesh 的监督谱系；第六卷讲多视图扩散，是 Zero-1-to-3、MVDream、SyncDreamer、Wonder3D 的一致性谱系；第七、八卷讲前馈工厂，是 LRM、TripoSR、GS-LRM、MeshLRM、LGM、Direct3D、SLAT、Hunyuan3D 的规模化谱系；第九卷讲网格手艺，是 MeshGPT、MeshAnything、PartCrafter 的拓扑与部件谱系。</p>
+<p>读法上，每卷抓一个“机制锚点”。第一卷锚点是可微渲染的梯度路径；第二卷锚点是哈希表的多分辨率与 3DGS 的致密化；第三卷锚点是无偏权重与 eikonal；第四卷锚点是三平面压缩与点云/隐式函数的选择；第五卷锚点是 score 蒸馏的粒子近似；第六卷锚点是多视图一致性约束；第七卷锚点是稀疏视图大重建模型的 token 化；第八卷锚点是结构化潜变量与 PBR；第九卷锚点是自回归网格 tokenization。锚点之间用四元组连线，就得到一张可检索的图。</p>
+<p>失败模式是把延伸阅读当成论文列表，读完不知道哪条能替换哪条。工程判断是：先确定产出类型，再倒推表示与监督。要网格就走 NeuS/前馈网格/重拓扑；要高斯的实时渲染就走 3DGS/DreamGaussian/LGM；要可编辑的结构化资产就走 SLAT/PartCrafter/Hunyuan3D。系统代价是跨卷替换会改变管线接口：从辐射场换到高斯，渲染器从积分换成光栅化，评测脚本也要换。</p>
+<div class="formula">$$\text{Pipeline}=\text{Input}\to\text{Representation}\to\text{Supervision}\to\text{Output}\to\text{Eval}$$</div>
+<p>这条链是延伸阅读的索引公式。任何词条都能放进某一环，任何替换都是环与环之间接口的替换。最后落在工程判断上：词条的价值不在名字，而在它替换了链上哪一环、付出了什么代价、在哪个例子上会失败。</p>
+<p class="paper-line">对应：appendix/app-glossary-c · 第 3/3 部分</p>

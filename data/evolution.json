@@ -1,0 +1,157 @@
+{
+ "timeline": [
+  {
+   "year": 2020,
+   "title": "NeRF：体渲染成为 3D 重建的可微算子",
+   "paper": "paper-nerf-2020",
+   "note": "用 MLP 表示辐射场、沿射线积分渲染，首次让 2D 照片监督直接优化 3D 几何；后续所有「用 2D 监督 3D」的路线都建立在它之上。"
+  },
+  {
+   "year": 2021,
+   "title": "NeuS/VolSDF 与 EG3D：表面与原生 3D 表示分叉",
+   "paper": "paper-neus-2021",
+   "note": "NeuS 把密度换成 SDF 的 logistic 变换，得到干净表面；EG3D 用三平面 GAN 直接在 3D 表示空间生成，开启原生 3D 生成支线。"
+  },
+  {
+   "year": 2022,
+   "title": "Instant-NGP 与 DreamFusion：速度与文生 3D 同时突破",
+   "paper": "paper-dreamfusion-2022",
+   "note": "哈希编码把 NeRF 训练压到分钟级；DreamFusion 用 SDS 把 2D 扩散先验蒸馏进 3D，第一次让文本直接生成可用 3D 物体。"
+  },
+  {
+   "year": 2023,
+   "title": "3DGS、Zero-1-to-3、LRM：实时表示、多视图先验、前馈大模型三线并起",
+   "paper": "paper-3dgs-2023",
+   "note": "3DGS 把渲染推到实时；Zero-1-to-3/MVDream 把单图生 3D 变成多视图一致生成；LRM 证明前馈 Transformer 可一次前向出 triplane，三条线在同年汇合。"
+  },
+  {
+   "year": 2024,
+   "title": "TRELLIS、MeshAnything、SF3D：结构化潜变量、拓扑、PBR 生产化",
+   "paper": "paper-trellis-2024",
+   "note": "TRELLIS 用 SLAT 统一多格式输出；MeshAnything 把任意网格重拓扑成艺术家级网格；SF3D 解决 UV 与光照解耦，生成资产开始能进引擎。"
+  },
+  {
+   "year": 2025,
+   "title": "Hunyuan3D 2.x、Step1X-3D、WorldGen：工业级资产与可穿越世界",
+   "paper": "paper-hunyuan3d-2-2025",
+   "note": "形状-材质双 DiT、可控生成、文本到可穿越世界；3D 生成从「单物体 demo」走向「生产管线 + 环境」。"
+  }
+ ],
+ "edges": [
+  {
+   "from": "alg-nerf-volume-rendering",
+   "to": "alg-hash-grid",
+   "type": "improve",
+   "note": "用多分辨率哈希表替代大 MLP 承担高频细节，训练从小时级降到分钟级，体渲染框架不变。"
+  },
+  {
+   "from": "alg-nerf-volume-rendering",
+   "to": "alg-3dgs-rasterization",
+   "type": "replace",
+   "note": "把隐式连续场换成显式高斯基元 + 光栅化，渲染从秒级降到实时，但显存随基元数增长。"
+  },
+  {
+   "from": "alg-nerf-volume-rendering",
+   "to": "alg-neus-sdf",
+   "type": "extend",
+   "note": "保留体渲染积分，把密度解释为 SDF 的 logistic 变换，使零等值面成为干净表面。"
+  },
+  {
+   "from": "alg-triplane-gan",
+   "to": "alg-lrm-triplane",
+   "type": "inherit",
+   "note": "LRM 直接继承三平面表示，但把 GAN 生成器换成图像条件 Transformer 解码器，从「随机生成」变成「单图重建」。"
+  },
+  {
+   "from": "alg-sds",
+   "to": "alg-sjc",
+   "type": "parallel",
+   "note": "同期另一条理论化路线：用得分链式法则与 Langevin 动力学替代噪声差启发式。"
+  },
+  {
+   "from": "alg-sds",
+   "to": "alg-vsd",
+   "type": "improve",
+   "note": "把 3D 参数视为分布、引入粒子得分，解决 SDS 多样性差与过饱和。"
+  },
+  {
+   "from": "alg-sds",
+   "to": "alg-ism",
+   "type": "improve",
+   "note": "用 DDIM 反演构造区间得分，降低随机噪声方差，几何更稳。"
+  },
+  {
+   "from": "alg-sds",
+   "to": "alg-3dgs-rasterization",
+   "type": "extend",
+   "note": "DreamGaussian 把 SDS 的可微渲染器换成 3DGS，优化时间从小时级压到分钟级。"
+  },
+  {
+   "from": "alg-zero123",
+   "to": "alg-mvdream",
+   "type": "improve",
+   "note": "从逐视角独立生成改为四视图联合自注意力，显著提升视角间一致性。"
+  },
+  {
+   "from": "alg-zero123",
+   "to": "alg-syncdreamer",
+   "type": "extend",
+   "note": "加入 3D-aware 注意力与同步生成，让多视图在几何上互相约束。"
+  },
+  {
+   "from": "alg-mvdream",
+   "to": "alg-cross-domain-diffusion",
+   "type": "extend",
+   "note": "在颜色之外增加法线通道，用几何域约束多视图一致性。"
+  },
+  {
+   "from": "alg-lrm-triplane",
+   "to": "alg-trellis-slat",
+   "type": "replace",
+   "note": "把三平面换成稀疏体素 + 局部特征的结构化潜变量 SLAT，支持高斯/网格多格式解码。"
+  },
+  {
+   "from": "alg-lrm-triplane",
+   "to": "alg-hunyuan-dit",
+   "type": "extend",
+   "note": "把 LRM 的单阶段重建拆成形状 DiT 与材质 DiT 两阶段，各自 scaling 到高分辨率与 PBR。"
+  },
+  {
+   "from": "alg-meshgpt-tokenization",
+   "to": "alg-meshanything",
+   "type": "improve",
+   "note": "从「生成网格」转为「重拓扑任意网格」，用相邻面 token 缩短序列并保证拓扑连续。"
+  },
+  {
+   "from": "alg-meshanything",
+   "to": "alg-partcrafter",
+   "type": "extend",
+   "note": "把整物体重拓扑扩展为多部件组合生成，支持部件级编辑与铰接。"
+  },
+  {
+   "from": "alg-text2room",
+   "to": "alg-wonderworld",
+   "type": "replace",
+   "note": "把迭代网格补全换成高斯泼溅 + 视频扩散，渲染实时、场景可外扩。"
+  },
+  {
+   "from": "alg-wonderworld",
+   "to": "alg-worldgen",
+   "type": "extend",
+   "note": "从单图外扩扩展到文本条件的可穿越世界，加入地形与交互。"
+  },
+  {
+   "from": "alg-objaverse-pipeline",
+   "to": "alg-uv-pbr",
+   "type": "extend",
+   "note": "数据管线从「有网格」推进到「有 UV + PBR」，生成资产可直接进引擎。"
+  },
+  {
+   "from": "alg-3dgs-rasterization",
+   "to": "alg-gs-lrm",
+   "type": "inherit",
+   "note": "GS-LRM 把 3DGS 作为前馈输出头，用 Transformer 一次预测高斯参数。"
+  }
+ ],
+ "external_review": "外部评审 2026-11-13：主线改为「表示 / 生成范式 / 应用」三条并行路线，线性七段只作教学主干。"
+}

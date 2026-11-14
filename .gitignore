@@ -1,0 +1,11 @@
+# 截图与临时产物（体积大，不入库）
+shots/
+content/shots/
+content/gen-progress.jsonl
+
+# Python
+__pycache__/
+*.pyc
+
+# 系统
+.DS_Store

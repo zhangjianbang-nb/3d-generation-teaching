@@ -1,0 +1,1331 @@
+{
+  "results": [
+    {
+      "title": "NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis",
+      "arxiv_id": "2003.08934",
+      "published": "2020-03-19",
+      "authors": [
+        "Ben Mildenhall",
+        "Pratul P. Srinivasan",
+        "Matthew Tancik",
+        "Jonathan T. Barron",
+        "Ravi Ramamoorthi",
+        "Ren Ng"
+      ],
+      "summary": "We present a method that achieves state-of-the-art results for synthesizing novel views of complex scenes by optimizing an underlying continuous volumetric scene function using a sparse set of input views. Our algorithm represents a scene using a fully-connected (non-convolutional) deep network, whose input is a single continuous 5D coordinate (spatial location $(x,y,z)$ and viewing direction $(θ, φ)$) and whose output is the volume density and view-dependent emitted radiance at that spatial location. We synthesize views by querying 5D coordinates along camera rays and use classic volume rendering techniques to project the output colors and densities into an image. Because volume rendering is naturally differentiable, the only input required to optimize our representation is a set of images with known camera poses. We describe how to effectively optimize neural radiance fields to render photorealistic novel views of scenes with complicated geometry and appearance, and demonstrate results that outperform prior work on neural rendering and view synthesis. View synthesis results are best viewed as videos, so we urge readers to view our supplementary video for convincing comparisons.",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "query": "NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis",
+      "venue": "European Conference on Computer Vision",
+      "citation_count": 1251,
+      "s2_title": null,
+      "s2_year": 2020
+    },
+    {
+      "title": "Instant Neural Graphics Primitives with a Multiresolution Hash Encoding",
+      "arxiv_id": "2201.05989",
+      "published": "2022-01-16",
+      "authors": [
+        "Thomas Müller",
+        "Alex Evans",
+        "Christoph Schied",
+        "Alexander Keller"
+      ],
+      "summary": "Neural graphics primitives, parameterized by fully connected neural networks, can be costly to train and evaluate. We reduce this cost with a versatile new input encoding that permits the use of a smaller network without sacrificing quality, thus significantly reducing the number of floating point and memory access operations: a small neural network is augmented by a multiresolution hash table of trainable feature vectors whose values are optimized through stochastic gradient descent. The multiresolution structure allows the network to disambiguate hash collisions, making for a simple architecture that is trivial to parallelize on modern GPUs. We leverage this parallelism by implementing the whole system using fully-fused CUDA kernels with a focus on minimizing wasted bandwidth and compute operations. We achieve a combined speedup of several orders of magnitude, enabling training of high-quality neural graphics primitives in a matter of seconds, and rendering in tens of milliseconds at a resolution of ${1920\\!\\times\\!1080}$.",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "query": "Instant Neural Graphics Primitives with a Multiresolution Hash Encoding",
+      "venue": "ACM Transactions on Graphics",
+      "citation_count": 6635,
+      "s2_title": null,
+      "s2_year": 2022
+    },
+    {
+      "title": "3D Gaussian Splatting for Real-Time Radiance Field Rendering",
+      "arxiv_id": "2308.04079",
+      "published": "2023-08-08",
+      "authors": [
+        "Bernhard Kerbl",
+        "Georgios Kopanas",
+        "Thomas Leimkühler",
+        "George Drettakis"
+      ],
+      "summary": "Radiance Field methods have recently revolutionized novel-view synthesis of scenes captured with multiple photos or videos. However, achieving high visual quality still requires neural networks that are costly to train and render, while recent faster methods inevitably trade off speed for quality. For unbounded and complete scenes (rather than isolated objects) and 1080p resolution rendering, no current method can achieve real-time display rates. We introduce three key elements that allow us to achieve state-of-the-art visual quality while maintaining competitive training times and importantly allow high-quality real-time (>= 30 fps) novel-view synthesis at 1080p resolution. First, starting from sparse points produced during camera calibration, we represent the scene with 3D Gaussians that preserve desirable properties of continuous volumetric radiance fields for scene optimization while avoiding unnecessary computation in empty space; Second, we perform interleaved optimization/density control of the 3D Gaussians, notably optimizing anisotropic covariance to achieve an accurate representation of the scene; Third, we develop a fast visibility-aware rendering algorithm that supports anisotropic splatting and both accelerates training and allows realtime rendering. We demonstrate state-of-the-art visual quality and real-time rendering on several established datasets.",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "query": "3D Gaussian Splatting for Real-Time Radiance Field Rendering",
+      "venue": "ACM Transactions on Graphics",
+      "citation_count": 11519,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "NeuS: Learning Neural Implicit Surfaces by Volume Rendering for Multi-view Reconstruction",
+      "arxiv_id": "2106.10689",
+      "published": "2021-06-20",
+      "authors": [
+        "Peng Wang",
+        "Lingjie Liu",
+        "Yuan Liu",
+        "Christian Theobalt",
+        "Taku Komura",
+        "Wenping Wang"
+      ],
+      "summary": "We present a novel neural surface reconstruction method, called NeuS, for reconstructing objects and scenes with high fidelity from 2D image inputs. Existing neural surface reconstruction approaches, such as DVR and IDR, require foreground mask as supervision, easily get trapped in local minima, and therefore struggle with the reconstruction of objects with severe self-occlusion or thin structures. Meanwhile, recent neural methods for novel view synthesis, such as NeRF and its variants, use volume rendering to produce a neural scene representation with robustness of optimization, even for highly complex objects. However, extracting high-quality surfaces from this learned implicit representation is difficult because there are not sufficient surface constraints in the representation. In NeuS, we propose to represent a surface as the zero-level set of a signed distance function (SDF) and develop a new volume rendering method to train a neural SDF representation. We observe that the conventional volume rendering method causes inherent geometric errors (i.e. bias) for surface reconstruction, and therefore propose a new formulation that is free of bias in the first order of approximation, thus leading to more accurate surface reconstruction even without the mask supervision. Experiments on the DTU dataset and the BlendedMVS dataset show that NeuS outperforms the state-of-the-arts in high-quality surface reconstruction, especially for objects and scenes with complex structures and self-occlusion.",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "query": "NeuS: Learning Neural Implicit Surfaces by Volume Rendering for Multi-view Reconstruction",
+      "venue": "Neural Information Processing Systems",
+      "citation_count": 2576,
+      "s2_title": null,
+      "s2_year": 2021
+    },
+    {
+      "title": "Volume Rendering of Neural Implicit Surfaces",
+      "arxiv_id": "2106.12052",
+      "published": "2021-06-22",
+      "authors": [
+        "Lior Yariv",
+        "Jiatao Gu",
+        "Yoni Kasten",
+        "Yaron Lipman"
+      ],
+      "summary": "Neural volume rendering became increasingly popular recently due to its success in synthesizing novel views of a scene from a sparse set of input images. So far, the geometry learned by neural volume rendering techniques was modeled using a generic density function. Furthermore, the geometry itself was extracted using an arbitrary level set of the density function leading to a noisy, often low fidelity reconstruction. The goal of this paper is to improve geometry representation and reconstruction in neural volume rendering. We achieve that by modeling the volume density as a function of the geometry. This is in contrast to previous work modeling the geometry as a function of the volume density. In more detail, we define the volume density function as Laplace's cumulative distribution function (CDF) applied to a signed distance function (SDF) representation. This simple density representation has three benefits: (i) it provides a useful inductive bias to the geometry learned in the neural volume rendering process; (ii) it facilitates a bound on the opacity approximation error, leading to an accurate sampling of the viewing ray. Accurate sampling is important to provide a precise coupling of geometry and radiance; and (iii) it allows efficient unsupervised disentanglement of shape and appearance in volume rendering. Applying this new density representation to challenging scene multiview datasets produced high quality geometry reconstructions, outperforming relevant baselines. Furthermore, switching shape and appearance between scenes is possible due to the disentanglement of the two.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "Volume Rendering of Neural Implicit Surfaces",
+      "venue": "Neural Information Processing Systems",
+      "citation_count": 1461,
+      "s2_title": null,
+      "s2_year": 2021
+    },
+    {
+      "title": "Efficient Geometry-aware 3D Generative Adversarial Networks",
+      "arxiv_id": "2112.07945",
+      "published": "2021-12-15",
+      "authors": [
+        "Eric R. Chan",
+        "Connor Z. Lin",
+        "Matthew A. Chan",
+        "Koki Nagano",
+        "Boxiao Pan",
+        "Shalini De Mello",
+        "Orazio Gallo",
+        "Leonidas Guibas",
+        "Jonathan Tremblay",
+        "Sameh Khamis",
+        "Tero Karras",
+        "Gordon Wetzstein"
+      ],
+      "summary": "Unsupervised generation of high-quality multi-view-consistent images and 3D shapes using only collections of single-view 2D photographs has been a long-standing challenge. Existing 3D GANs are either compute-intensive or make approximations that are not 3D-consistent; the former limits quality and resolution of the generated images and the latter adversely affects multi-view consistency and shape quality. In this work, we improve the computational efficiency and image quality of 3D GANs without overly relying on these approximations. We introduce an expressive hybrid explicit-implicit network architecture that, together with other design choices, synthesizes not only high-resolution multi-view-consistent images in real time but also produces high-quality 3D geometry. By decoupling feature generation and neural rendering, our framework is able to leverage state-of-the-art 2D CNN generators, such as StyleGAN2, and inherit their efficiency and expressiveness. We demonstrate state-of-the-art 3D-aware synthesis with FFHQ and AFHQ Cats, among other experiments.",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "query": "Efficient Geometry-aware 3D Generative Adversarial Networks",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 1577,
+      "s2_title": null,
+      "s2_year": 2021
+    },
+    {
+      "title": "GET3D: A Generative Model of High Quality 3D Textured Shapes Learned from Images",
+      "arxiv_id": "2209.11163",
+      "published": "2022-09-22",
+      "authors": [
+        "Jun Gao",
+        "Tianchang Shen",
+        "Zian Wang",
+        "Wenzheng Chen",
+        "Kangxue Yin",
+        "Daiqing Li",
+        "Or Litany",
+        "Zan Gojcic",
+        "Sanja Fidler"
+      ],
+      "summary": "As several industries are moving towards modeling massive 3D virtual worlds, the need for content creation tools that can scale in terms of the quantity, quality, and diversity of 3D content is becoming evident. In our work, we aim to train performant 3D generative models that synthesize textured meshes which can be directly consumed by 3D rendering engines, thus immediately usable in downstream applications. Prior works on 3D generative modeling either lack geometric details, are limited in the mesh topology they can produce, typically do not support textures, or utilize neural renderers in the synthesis process, which makes their use in common 3D software non-trivial. In this work, we introduce GET3D, a Generative model that directly generates Explicit Textured 3D meshes with complex topology, rich geometric details, and high-fidelity textures. We bridge recent success in the differentiable surface modeling, differentiable rendering as well as 2D Generative Adversarial Networks to train our model from 2D image collections. GET3D is able to generate high-quality 3D textured meshes, ranging from cars, chairs, animals, motorbikes and human characters to buildings, achieving significant improvements over previous methods.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "GET3D: A Generative Model of High Quality 3D Textured Shapes Learned from Images",
+      "venue": "Neural Information Processing Systems",
+      "citation_count": 681,
+      "s2_title": null,
+      "s2_year": 2022
+    },
+    {
+      "title": "DreamFusion: Text-to-3D using 2D Diffusion",
+      "arxiv_id": "2209.14988",
+      "published": "2022-09-29",
+      "authors": [
+        "Ben Poole",
+        "Ajay Jain",
+        "Jonathan T. Barron",
+        "Ben Mildenhall"
+      ],
+      "summary": "Recent breakthroughs in text-to-image synthesis have been driven by diffusion models trained on billions of image-text pairs. Adapting this approach to 3D synthesis would require large-scale datasets of labeled 3D data and efficient architectures for denoising 3D data, neither of which currently exist. In this work, we circumvent these limitations by using a pretrained 2D text-to-image diffusion model to perform text-to-3D synthesis. We introduce a loss based on probability density distillation that enables the use of a 2D diffusion model as a prior for optimization of a parametric image generator. Using this loss in a DeepDream-like procedure, we optimize a randomly-initialized 3D model (a Neural Radiance Field, or NeRF) via gradient descent such that its 2D renderings from random angles achieve a low loss. The resulting 3D model of the given text can be viewed from any angle, relit by arbitrary illumination, or composited into any 3D environment. Our approach requires no 3D training data and no modifications to the image diffusion model, demonstrating the effectiveness of pretrained image diffusion models as priors.",
+      "categories": [
+        "cs.CV",
+        "cs.LG",
+        "stat.ML"
+      ],
+      "query": "DreamFusion: Text-to-3D using 2D Diffusion",
+      "venue": "International Conference on Learning Representations",
+      "citation_count": 4024,
+      "s2_title": null,
+      "s2_year": 2022
+    },
+    {
+      "title": "Magic3D: High-Resolution Text-to-3D Content Creation",
+      "arxiv_id": "2211.10440",
+      "published": "2022-11-18",
+      "authors": [
+        "Chen-Hsuan Lin",
+        "Jun Gao",
+        "Luming Tang",
+        "Towaki Takikawa",
+        "Xiaohui Zeng",
+        "Xun Huang",
+        "Karsten Kreis",
+        "Sanja Fidler",
+        "Ming-Yu Liu",
+        "Tsung-Yi Lin"
+      ],
+      "summary": "DreamFusion has recently demonstrated the utility of a pre-trained text-to-image diffusion model to optimize Neural Radiance Fields (NeRF), achieving remarkable text-to-3D synthesis results. However, the method has two inherent limitations: (a) extremely slow optimization of NeRF and (b) low-resolution image space supervision on NeRF, leading to low-quality 3D models with a long processing time. In this paper, we address these limitations by utilizing a two-stage optimization framework. First, we obtain a coarse model using a low-resolution diffusion prior and accelerate with a sparse 3D hash grid structure. Using the coarse representation as the initialization, we further optimize a textured 3D mesh model with an efficient differentiable renderer interacting with a high-resolution latent diffusion model. Our method, dubbed Magic3D, can create high quality 3D mesh models in 40 minutes, which is 2x faster than DreamFusion (reportedly taking 1.5 hours on average), while also achieving higher resolution. User studies show 61.7% raters to prefer our approach over DreamFusion. Together with the image-conditioned generation capabilities, we provide users with new ways to control 3D synthesis, opening up new avenues to various creative applications.",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "query": "Magic3D: High-Resolution Text-to-3D Content Creation",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 1767,
+      "s2_title": null,
+      "s2_year": 2022
+    },
+    {
+      "title": "ProlificDreamer: High-Fidelity and Diverse Text-to-3D Generation with Variational Score Distillation",
+      "arxiv_id": "2305.16213",
+      "published": "2023-05-25",
+      "authors": [
+        "Zhengyi Wang",
+        "Cheng Lu",
+        "Yikai Wang",
+        "Fan Bao",
+        "Chongxuan Li",
+        "Hang Su",
+        "Jun Zhu"
+      ],
+      "summary": "Score distillation sampling (SDS) has shown great promise in text-to-3D generation by distilling pretrained large-scale text-to-image diffusion models, but suffers from over-saturation, over-smoothing, and low-diversity problems. In this work, we propose to model the 3D parameter as a random variable instead of a constant as in SDS and present variational score distillation (VSD), a principled particle-based variational framework to explain and address the aforementioned issues in text-to-3D generation. We show that SDS is a special case of VSD and leads to poor samples with both small and large CFG weights. In comparison, VSD works well with various CFG weights as ancestral sampling from diffusion models and simultaneously improves the diversity and sample quality with a common CFG weight (i.e., $7.5$). We further present various improvements in the design space for text-to-3D such as distillation time schedule and density initialization, which are orthogonal to the distillation algorithm yet not well explored. Our overall approach, dubbed ProlificDreamer, can generate high rendering resolution (i.e., $512\\times512$) and high-fidelity NeRF with rich structure and complex effects (e.g., smoke and drops). Further, initialized from NeRF, meshes fine-tuned by VSD are meticulously detailed and photo-realistic. Project page and codes: https://ml.cs.tsinghua.edu.cn/prolificdreamer/",
+      "categories": [
+        "cs.LG",
+        "cs.CV"
+      ],
+      "query": "ProlificDreamer: High-Fidelity and Diverse Text-to-3D Generation with Variational Score Distillation",
+      "venue": "Neural Information Processing Systems",
+      "citation_count": 1549,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "Fantasia3D: Disentangling Geometry and Appearance for High-quality Text-to-3D Content Creation",
+      "arxiv_id": "2303.13873",
+      "published": "2023-03-24",
+      "authors": [
+        "Rui Chen",
+        "Yongwei Chen",
+        "Ningxin Jiao",
+        "Kui Jia"
+      ],
+      "summary": "Automatic 3D content creation has achieved rapid progress recently due to the availability of pre-trained, large language models and image diffusion models, forming the emerging topic of text-to-3D content creation. Existing text-to-3D methods commonly use implicit scene representations, which couple the geometry and appearance via volume rendering and are suboptimal in terms of recovering finer geometries and achieving photorealistic rendering; consequently, they are less effective for generating high-quality 3D assets. In this work, we propose a new method of Fantasia3D for high-quality text-to-3D content creation. Key to Fantasia3D is the disentangled modeling and learning of geometry and appearance. For geometry learning, we rely on a hybrid scene representation, and propose to encode surface normal extracted from the representation as the input of the image diffusion model. For appearance modeling, we introduce the spatially varying bidirectional reflectance distribution function (BRDF) into the text-to-3D task, and learn the surface material for photorealistic rendering of the generated surface. Our disentangled framework is more compatible with popular graphics engines, supporting relighting, editing, and physical simulation of the generated 3D assets. We conduct thorough experiments that show the advantages of our method over existing ones under different text-to-3D task settings. Project page and source codes: https://fantasia3d.github.io/.",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "query": "Fantasia3D: Disentangling Geometry and Appearance for High-quality Text-to-3D Content Creation",
+      "venue": "IEEE International Conference on Computer Vision",
+      "citation_count": 866,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "TextMesh: Generation of Realistic 3D Meshes From Text Prompts",
+      "arxiv_id": "2304.12439",
+      "published": "2023-04-24",
+      "authors": [
+        "Christina Tsalicoglou",
+        "Fabian Manhardt",
+        "Alessio Tonioni",
+        "Michael Niemeyer",
+        "Federico Tombari"
+      ],
+      "summary": "The ability to generate highly realistic 2D images from mere text prompts has recently made huge progress in terms of speed and quality, thanks to the advent of image diffusion models. Naturally, the question arises if this can be also achieved in the generation of 3D content from such text prompts. To this end, a new line of methods recently emerged trying to harness diffusion models, trained on 2D images, for supervision of 3D model generation using view dependent prompts. While achieving impressive results, these methods, however, have two major drawbacks. First, rather than commonly used 3D meshes, they instead generate neural radiance fields (NeRFs), making them impractical for most real applications. Second, these approaches tend to produce over-saturated models, giving the output a cartoonish looking effect. Therefore, in this work we propose a novel method for generation of highly realistic-looking 3D meshes. To this end, we extend NeRF to employ an SDF backbone, leading to improved 3D mesh extraction. In addition, we propose a novel way to finetune the mesh texture, removing the effect of high saturation and improving the details of the output 3D mesh.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "TextMesh: Generation of Realistic 3D Meshes From Text Prompts",
+      "venue": "International Conference on 3D Vision",
+      "citation_count": 176,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "DreamGaussian: Generative Gaussian Splatting for Efficient 3D Content Creation",
+      "arxiv_id": "2309.16653",
+      "published": "2023-09-28",
+      "authors": [
+        "Jiaxiang Tang",
+        "Jiawei Ren",
+        "Hang Zhou",
+        "Ziwei Liu",
+        "Gang Zeng"
+      ],
+      "summary": "Recent advances in 3D content creation mostly leverage optimization-based 3D generation via score distillation sampling (SDS). Though promising results have been exhibited, these methods often suffer from slow per-sample optimization, limiting their practical usage. In this paper, we propose DreamGaussian, a novel 3D content generation framework that achieves both efficiency and quality simultaneously. Our key insight is to design a generative 3D Gaussian Splatting model with companioned mesh extraction and texture refinement in UV space. In contrast to the occupancy pruning used in Neural Radiance Fields, we demonstrate that the progressive densification of 3D Gaussians converges significantly faster for 3D generative tasks. To further enhance the texture quality and facilitate downstream applications, we introduce an efficient algorithm to convert 3D Gaussians into textured meshes and apply a fine-tuning stage to refine the details. Extensive experiments demonstrate the superior efficiency and competitive generation quality of our proposed approach. Notably, DreamGaussian produces high-quality textured meshes in just 2 minutes from a single-view image, achieving approximately 10 times acceleration compared to existing methods.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "DreamGaussian: Generative Gaussian Splatting for Efficient 3D Content Creation",
+      "venue": "International Conference on Learning Representations",
+      "citation_count": 1122,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "LucidDreamer: Towards High-Fidelity Text-to-3D Generation via Interval Score Matching",
+      "arxiv_id": "2311.11284",
+      "published": "2023-11-19",
+      "authors": [
+        "Yixun Liang",
+        "Xin Yang",
+        "Jiantao Lin",
+        "Haodong Li",
+        "Xiaogang Xu",
+        "Yingcong Chen"
+      ],
+      "summary": "The recent advancements in text-to-3D generation mark a significant milestone in generative models, unlocking new possibilities for creating imaginative 3D assets across various real-world scenarios. While recent advancements in text-to-3D generation have shown promise, they often fall short in rendering detailed and high-quality 3D models. This problem is especially prevalent as many methods base themselves on Score Distillation Sampling (SDS). This paper identifies a notable deficiency in SDS, that it brings inconsistent and low-quality updating direction for the 3D model, causing the over-smoothing effect. To address this, we propose a novel approach called Interval Score Matching (ISM). ISM employs deterministic diffusing trajectories and utilizes interval-based score matching to counteract over-smoothing. Furthermore, we incorporate 3D Gaussian Splatting into our text-to-3D generation pipeline. Extensive experiments show that our model largely outperforms the state-of-the-art in quality and training efficiency.",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.MM"
+      ],
+      "query": "LucidDreamer: Towards High-Fidelity Text-to-3D Generation via Interval Score Matching",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 363,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "Point-E: A System for Generating 3D Point Clouds from Complex Prompts",
+      "arxiv_id": "2212.08751",
+      "published": "2022-12-16",
+      "authors": [
+        "Alex Nichol",
+        "Heewoo Jun",
+        "Prafulla Dhariwal",
+        "Pamela Mishkin",
+        "Mark Chen"
+      ],
+      "summary": "While recent work on text-conditional 3D object generation has shown promising results, the state-of-the-art methods typically require multiple GPU-hours to produce a single sample. This is in stark contrast to state-of-the-art generative image models, which produce samples in a number of seconds or minutes. In this paper, we explore an alternative method for 3D object generation which produces 3D models in only 1-2 minutes on a single GPU. Our method first generates a single synthetic view using a text-to-image diffusion model, and then produces a 3D point cloud using a second diffusion model which conditions on the generated image. While our method still falls short of the state-of-the-art in terms of sample quality, it is one to two orders of magnitude faster to sample from, offering a practical trade-off for some use cases. We release our pre-trained point cloud diffusion models, as well as evaluation code and models, at https://github.com/openai/point-e.",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "query": "Point-E: A System for Generating 3D Point Clouds from Complex Prompts",
+      "venue": "arXiv.org",
+      "citation_count": 950,
+      "s2_title": null,
+      "s2_year": 2022
+    },
+    {
+      "title": "Shap-E: Generating Conditional 3D Implicit Functions",
+      "arxiv_id": "2305.02463",
+      "published": "2023-05-03",
+      "authors": [
+        "Heewoo Jun",
+        "Alex Nichol"
+      ],
+      "summary": "We present Shap-E, a conditional generative model for 3D assets. Unlike recent work on 3D generative models which produce a single output representation, Shap-E directly generates the parameters of implicit functions that can be rendered as both textured meshes and neural radiance fields. We train Shap-E in two stages: first, we train an encoder that deterministically maps 3D assets into the parameters of an implicit function; second, we train a conditional diffusion model on outputs of the encoder. When trained on a large dataset of paired 3D and text data, our resulting models are capable of generating complex and diverse 3D assets in a matter of seconds. When compared to Point-E, an explicit generative model over point clouds, Shap-E converges faster and reaches comparable or better sample quality despite modeling a higher-dimensional, multi-representation output space. We release model weights, inference code, and samples at https://github.com/openai/shap-e.",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "query": "Shap-E: Generating Conditional 3D Implicit Functions",
+      "venue": "arXiv.org",
+      "citation_count": 531,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "Zero-1-to-3: Zero-shot One Image to 3D Object",
+      "arxiv_id": "2303.11328",
+      "published": "2023-03-20",
+      "authors": [
+        "Ruoshi Liu",
+        "Rundi Wu",
+        "Basile Van Hoorick",
+        "Pavel Tokmakov",
+        "Sergey Zakharov",
+        "Carl Vondrick"
+      ],
+      "summary": "We introduce Zero-1-to-3, a framework for changing the camera viewpoint of an object given just a single RGB image. To perform novel view synthesis in this under-constrained setting, we capitalize on the geometric priors that large-scale diffusion models learn about natural images. Our conditional diffusion model uses a synthetic dataset to learn controls of the relative camera viewpoint, which allow new images to be generated of the same object under a specified camera transformation. Even though it is trained on a synthetic dataset, our model retains a strong zero-shot generalization ability to out-of-distribution datasets as well as in-the-wild images, including impressionist paintings. Our viewpoint-conditioned diffusion approach can further be used for the task of 3D reconstruction from a single image. Qualitative and quantitative experiments show that our method significantly outperforms state-of-the-art single-view 3D reconstruction and novel view synthesis models by leveraging Internet-scale pre-training.",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.RO"
+      ],
+      "query": "Zero-1-to-3: Zero-shot One Image to 3D Object",
+      "venue": "IEEE International Conference on Computer Vision",
+      "citation_count": 1973,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "MVDream: Multi-view Diffusion for 3D Generation",
+      "arxiv_id": "2308.16512",
+      "published": "2023-08-31",
+      "authors": [
+        "Yichun Shi",
+        "Peng Wang",
+        "Jianglong Ye",
+        "Mai Long",
+        "Kejie Li",
+        "Xiao Yang"
+      ],
+      "summary": "We introduce MVDream, a diffusion model that is able to generate consistent multi-view images from a given text prompt. Learning from both 2D and 3D data, a multi-view diffusion model can achieve the generalizability of 2D diffusion models and the consistency of 3D renderings. We demonstrate that such a multi-view diffusion model is implicitly a generalizable 3D prior agnostic to 3D representations. It can be applied to 3D generation via Score Distillation Sampling, significantly enhancing the consistency and stability of existing 2D-lifting methods. It can also learn new concepts from a few 2D examples, akin to DreamBooth, but for 3D generation.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "MVDream: Multi-view Diffusion for 3D Generation",
+      "venue": "International Conference on Learning Representations",
+      "citation_count": 1147,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "SyncDreamer: Generating Multiview-consistent Images from a Single-view Image",
+      "arxiv_id": "2309.03453",
+      "published": "2023-09-07",
+      "authors": [
+        "Yuan Liu",
+        "Cheng Lin",
+        "Zijiao Zeng",
+        "Xiaoxiao Long",
+        "Lingjie Liu",
+        "Taku Komura",
+        "Wenping Wang"
+      ],
+      "summary": "In this paper, we present a novel diffusion model called that generates multiview-consistent images from a single-view image. Using pretrained large-scale 2D diffusion models, recent work Zero123 demonstrates the ability to generate plausible novel views from a single-view image of an object. However, maintaining consistency in geometry and colors for the generated images remains a challenge. To address this issue, we propose a synchronized multiview diffusion model that models the joint probability distribution of multiview images, enabling the generation of multiview-consistent images in a single reverse process. SyncDreamer synchronizes the intermediate states of all the generated images at every step of the reverse process through a 3D-aware feature attention mechanism that correlates the corresponding features across different views. Experiments show that SyncDreamer generates images with high consistency across different views, thus making it well-suited for various 3D generation tasks such as novel-view-synthesis, text-to-3D, and image-to-3D.",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR"
+      ],
+      "query": "SyncDreamer: Generating Multiview-consistent Images from a Single-view Image",
+      "venue": "International Conference on Learning Representations",
+      "citation_count": 824,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "Wonder3D: Single Image to 3D using Cross-Domain Diffusion",
+      "arxiv_id": "2310.15008",
+      "published": "2023-10-23",
+      "authors": [
+        "Xiaoxiao Long",
+        "Yuan-Chen Guo",
+        "Cheng Lin",
+        "Yuan Liu",
+        "Zhiyang Dou",
+        "Lingjie Liu",
+        "Yuexin Ma",
+        "Song-Hai Zhang",
+        "Marc Habermann",
+        "Christian Theobalt",
+        "Wenping Wang"
+      ],
+      "summary": "In this work, we introduce Wonder3D, a novel method for efficiently generating high-fidelity textured meshes from single-view images.Recent methods based on Score Distillation Sampling (SDS) have shown the potential to recover 3D geometry from 2D diffusion priors, but they typically suffer from time-consuming per-shape optimization and inconsistent geometry. In contrast, certain works directly produce 3D information via fast network inferences, but their results are often of low quality and lack geometric details. To holistically improve the quality, consistency, and efficiency of image-to-3D tasks, we propose a cross-domain diffusion model that generates multi-view normal maps and the corresponding color images. To ensure consistency, we employ a multi-view cross-domain attention mechanism that facilitates information exchange across views and modalities. Lastly, we introduce a geometry-aware normal fusion algorithm that extracts high-quality surfaces from the multi-view 2D representations. Our extensive evaluations demonstrate that our method achieves high-quality reconstruction results, robust generalization, and reasonably good efficiency compared to prior works.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "Wonder3D: Single Image to 3D using Cross-Domain Diffusion",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 928,
+      "s2_title": null,
+      "s2_year": 2023
+    },
+    {
+      "title": "LRM: Large Reconstruction Model for Single Image to 3D",
+      "arxiv_id": "2311.04400",
+      "published": "2023-11-08",
+      "authors": [
+        "Yicong Hong",
+        "Kai Zhang",
+        "Jiuxiang Gu",
+        "Sai Bi",
+        "Yang Zhou",
+        "Difan Liu",
+        "Feng Liu",
+        "Kalyan Sunkavalli",
+        "Trung Bui",
+        "Hao Tan"
+      ],
+      "summary": "We propose the first Large Reconstruction Model (LRM) that predicts the 3D model of an object from a single input image within just 5 seconds. In contrast to many previous methods that are trained on small-scale datasets such as ShapeNet in a category-specific fashion, LRM adopts a highly scalable transformer-based architecture with 500 million learnable parameters to directly predict a neural radiance field (NeRF) from the input image. We train our model in an end-to-end manner on massive multi-view data containing around 1 million objects, including both synthetic renderings from Objaverse and real captures from MVImgNet. This combination of a high-capacity model and large-scale training data empowers our model to be highly generalizable and produce high-quality 3D reconstructions from various testing inputs, including real-world in-the-wild captures and images created by generative models. Video demos and interactable 3D meshes can be found on our LRM project webpage: https://yiconghong.me/LRM.",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "query": "LRM: Large Reconstruction Model for Single Image to 3D",
+      "venue": "International Conference on Learning Representations",
+      "citation_count": 1060,
+      "s2_title": "LRM: Large Reconstruction Model for Single Image to 3D",
+      "s2_year": 2023
+    },
+    {
+      "title": "TripoSR: Fast 3D Object Reconstruction from a Single Image",
+      "arxiv_id": "2403.02151",
+      "published": "2024-03-04",
+      "authors": [
+        "Dmitry Tochilkin",
+        "David Pankratz",
+        "Zexiang Liu",
+        "Zixuan Huang",
+        "Adam Letts",
+        "Yangguang Li",
+        "Ding Liang",
+        "Christian Laforte",
+        "Varun Jampani",
+        "Yan-Pei Cao"
+      ],
+      "summary": "This technical report introduces TripoSR, a 3D reconstruction model leveraging transformer architecture for fast feed-forward 3D generation, producing 3D mesh from a single image in under 0.5 seconds. Building upon the LRM network architecture, TripoSR integrates substantial improvements in data processing, model design, and training techniques. Evaluations on public datasets show that TripoSR exhibits superior performance, both quantitatively and qualitatively, compared to other open-source alternatives. Released under the MIT license, TripoSR is intended to empower researchers, developers, and creatives with the latest advancements in 3D generative AI.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "TripoSR: Fast 3D Object Reconstruction from a Single Image",
+      "venue": "arXiv.org",
+      "citation_count": 333,
+      "s2_title": "TripoSR: Fast 3D Object Reconstruction from a Single Image",
+      "s2_year": 2024
+    },
+    {
+      "title": "InstantMesh: Efficient 3D Mesh Generation from a Single Image with Sparse-view Large Reconstruction Models",
+      "arxiv_id": "2404.07191",
+      "published": "2024-04-10",
+      "authors": [
+        "Jiale Xu",
+        "Weihao Cheng",
+        "Yiming Gao",
+        "Xintao Wang",
+        "Shenghua Gao",
+        "Ying Shan"
+      ],
+      "summary": "We present InstantMesh, a feed-forward framework for instant 3D mesh generation from a single image, featuring state-of-the-art generation quality and significant training scalability. By synergizing the strengths of an off-the-shelf multiview diffusion model and a sparse-view reconstruction model based on the LRM architecture, InstantMesh is able to create diverse 3D assets within 10 seconds. To enhance the training efficiency and exploit more geometric supervisions, e.g, depths and normals, we integrate a differentiable iso-surface extraction module into our framework and directly optimize on the mesh representation. Experimental results on public datasets demonstrate that InstantMesh significantly outperforms other latest image-to-3D baselines, both qualitatively and quantitatively. We release all the code, weights, and demo of InstantMesh, with the intention that it can make substantial contributions to the community of 3D generative AI and empower both researchers and content creators.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "InstantMesh: Efficient 3D Mesh Generation from a Single Image with Sparse-view Large Reconstruction Models",
+      "venue": "arXiv.org",
+      "citation_count": 596,
+      "s2_title": "InstantMesh: Efficient 3D Mesh Generation from a Single Image with Sparse-view Large Reconstruction Models",
+      "s2_year": 2024
+    },
+    {
+      "title": "CRM: Single Image to 3D Textured Mesh with Convolutional Reconstruction Model",
+      "arxiv_id": "2403.05034",
+      "published": "2024-03-08",
+      "authors": [
+        "Zhengyi Wang",
+        "Yikai Wang",
+        "Yifei Chen",
+        "Chendong Xiang",
+        "Shuo Chen",
+        "Dajiang Yu",
+        "Chongxuan Li",
+        "Hang Su",
+        "Jun Zhu"
+      ],
+      "summary": "Feed-forward 3D generative models like the Large Reconstruction Model (LRM) have demonstrated exceptional generation speed. However, the transformer-based methods do not leverage the geometric priors of the triplane component in their architecture, often leading to sub-optimal quality given the limited size of 3D data and slow training. In this work, we present the Convolutional Reconstruction Model (CRM), a high-fidelity feed-forward single image-to-3D generative model. Recognizing the limitations posed by sparse 3D data, we highlight the necessity of integrating geometric priors into network design. CRM builds on the key observation that the visualization of triplane exhibits spatial correspondence of six orthographic images. First, it generates six orthographic view images from a single input image, then feeds these images into a convolutional U-Net, leveraging its strong pixel-level alignment capabilities and significant bandwidth to create a high-resolution triplane. CRM further employs Flexicubes as geometric representation, facilitating direct end-to-end optimization on textured meshes. Overall, our model delivers a high-fidelity textured mesh from an image in just 10 seconds, without any test-time optimization.",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "query": "CRM: Single Image to 3D Textured Mesh with Convolutional Reconstruction Model",
+      "venue": "European Conference on Computer Vision",
+      "citation_count": 282,
+      "s2_title": "CRM: Single Image to 3D Textured Mesh with Convolutional Reconstruction Model",
+      "s2_year": 2024
+    },
+    {
+      "title": "GS-LRM: Large Reconstruction Model for 3D Gaussian Splatting",
+      "arxiv_id": "2404.19702",
+      "published": "2024-04-30",
+      "authors": [
+        "Kai Zhang",
+        "Sai Bi",
+        "Hao Tan",
+        "Yuanbo Xiangli",
+        "Nanxuan Zhao",
+        "Kalyan Sunkavalli",
+        "Zexiang Xu"
+      ],
+      "summary": "We propose GS-LRM, a scalable large reconstruction model that can predict high-quality 3D Gaussian primitives from 2-4 posed sparse images in 0.23 seconds on single A100 GPU. Our model features a very simple transformer-based architecture; we patchify input posed images, pass the concatenated multi-view image tokens through a sequence of transformer blocks, and decode final per-pixel Gaussian parameters directly from these tokens for differentiable rendering. In contrast to previous LRMs that can only reconstruct objects, by predicting per-pixel Gaussians, GS-LRM naturally handles scenes with large variations in scale and complexity. We show that our model can work on both object and scene captures by training it on Objaverse and RealEstate10K respectively. In both scenarios, the models outperform state-of-the-art baselines by a wide margin. We also demonstrate applications of our model in downstream 3D generation tasks. Our project webpage is available at: https://sai-bi.github.io/project/gs-lrm/ .",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "GS-LRM: Large Reconstruction Model for 3D Gaussian Splatting",
+      "venue": "European Conference on Computer Vision",
+      "citation_count": 423,
+      "s2_title": "GS-LRM: Large Reconstruction Model for 3D Gaussian Splatting",
+      "s2_year": 2024
+    },
+    {
+      "title": "LGM: Large Multi-View Gaussian Model for High-Resolution 3D Content Creation",
+      "arxiv_id": "2402.05054",
+      "published": "2024-02-07",
+      "authors": [
+        "Jiaxiang Tang",
+        "Zhaoxi Chen",
+        "Xiaokang Chen",
+        "Tengfei Wang",
+        "Gang Zeng",
+        "Ziwei Liu"
+      ],
+      "summary": "3D content creation has achieved significant progress in terms of both quality and speed. Although current feed-forward models can produce 3D objects in seconds, their resolution is constrained by the intensive computation required during training. In this paper, we introduce Large Multi-View Gaussian Model (LGM), a novel framework designed to generate high-resolution 3D models from text prompts or single-view images. Our key insights are two-fold: 1) 3D Representation: We propose multi-view Gaussian features as an efficient yet powerful representation, which can then be fused together for differentiable rendering. 2) 3D Backbone: We present an asymmetric U-Net as a high-throughput backbone operating on multi-view images, which can be produced from text or single-view image input by leveraging multi-view diffusion models. Extensive experiments demonstrate the high fidelity and efficiency of our approach. Notably, we maintain the fast speed to generate 3D objects within 5 seconds while boosting the training resolution to 512, thereby achieving high-resolution 3D content generation.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "LGM: Large Multi-View Gaussian Model for High-Resolution 3D Content Creation",
+      "venue": "European Conference on Computer Vision",
+      "citation_count": 928,
+      "s2_title": "LGM: Large Multi-View Gaussian Model for High-Resolution 3D Content Creation",
+      "s2_year": 2024
+    },
+    {
+      "title": "Direct3D: Scalable Image-to-3D Generation via 3D Latent Diffusion Transformer",
+      "arxiv_id": "2405.14832",
+      "published": "2024-05-23",
+      "authors": [
+        "Shuang Wu",
+        "Youtian Lin",
+        "Feihu Zhang",
+        "Yifei Zeng",
+        "Jingxi Xu",
+        "Philip Torr",
+        "Xun Cao",
+        "Yao Yao"
+      ],
+      "summary": "Generating high-quality 3D assets from text and images has long been challenging, primarily due to the absence of scalable 3D representations capable of capturing intricate geometry distributions. In this work, we introduce Direct3D, a native 3D generative model scalable to in-the-wild input images, without requiring a multiview diffusion model or SDS optimization. Our approach comprises two primary components: a Direct 3D Variational Auto-Encoder (D3D-VAE) and a Direct 3D Diffusion Transformer (D3D-DiT). D3D-VAE efficiently encodes high-resolution 3D shapes into a compact and continuous latent triplane space. Notably, our method directly supervises the decoded geometry using a semi-continuous surface sampling strategy, diverging from previous methods relying on rendered images as supervision signals. D3D-DiT models the distribution of encoded 3D latents and is specifically designed to fuse positional information from the three feature maps of the triplane latent, enabling a native 3D generative model scalable to large-scale 3D datasets. Additionally, we introduce an innovative image-to-3D generation pipeline incorporating semantic and pixel-level image conditions, allowing the model to produce 3D shapes consistent with the provided conditional image input. Extensive experiments demonstrate the superiority of our large-scale pre-trained Direct3D over previous image-to-3D approaches, achieving significantly better generation quality and generalization ability, thus establishing a new state-of-the-art for 3D content creation. Project page: https://nju-3dv.github.io/projects/Direct3D/.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "Direct3D: Scalable Image-to-3D Generation via 3D Latent Diffusion Transformer",
+      "venue": "Neural Information Processing Systems",
+      "citation_count": 268,
+      "s2_title": "Direct3D: Scalable Image-to-3D Generation via 3D Latent Diffusion Transformer",
+      "s2_year": 2024
+    },
+    {
+      "title": "Structured 3D Latents for Scalable and Versatile 3D Generation",
+      "arxiv_id": "2412.01506",
+      "published": "2024-12-02",
+      "authors": [
+        "Jianfeng Xiang",
+        "Zelong Lv",
+        "Sicheng Xu",
+        "Yu Deng",
+        "Ruicheng Wang",
+        "Bowen Zhang",
+        "Dong Chen",
+        "Xin Tong",
+        "Jiaolong Yang"
+      ],
+      "summary": "We introduce a novel 3D generation method for versatile and high-quality 3D asset creation. The cornerstone is a unified Structured LATent (SLAT) representation which allows decoding to different output formats, such as Radiance Fields, 3D Gaussians, and meshes. This is achieved by integrating a sparsely-populated 3D grid with dense multiview visual features extracted from a powerful vision foundation model, comprehensively capturing both structural (geometry) and textural (appearance) information while maintaining flexibility during decoding. We employ rectified flow transformers tailored for SLAT as our 3D generation models and train models with up to 2 billion parameters on a large 3D asset dataset of 500K diverse objects. Our model generates high-quality results with text or image conditions, significantly surpassing existing methods, including recent ones at similar scales. We showcase flexible output format selection and local 3D editing capabilities which were not offered by previous models. Code, model, and data will be released.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "Structured 3D Latents for Scalable and Versatile 3D Generation",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 1072,
+      "s2_title": "Structured 3D Latents for Scalable and Versatile 3D Generation",
+      "s2_year": 2024
+    },
+    {
+      "title": "Hunyuan3D 2.0: Scaling Diffusion Models for High Resolution Textured 3D Assets Generation",
+      "arxiv_id": "2501.12202",
+      "published": "2025-01-21",
+      "authors": [
+        "Zibo Zhao",
+        "Zeqiang Lai",
+        "Qingxiang Lin",
+        "Yunfei Zhao",
+        "Haolin Liu",
+        "Shuhui Yang",
+        "Yifei Feng",
+        "Mingxin Yang",
+        "Sheng Zhang",
+        "Xianghui Yang",
+        "Huiwen Shi",
+        "Sicong Liu",
+        "Junta Wu",
+        "Yihang Lian",
+        "Fan Yang",
+        "Ruining Tang",
+        "Zebin He",
+        "Xinzhou Wang",
+        "Jian Liu",
+        "Xuhui Zuo",
+        "Zhuo Chen",
+        "Biwen Lei",
+        "Haohan Weng",
+        "Jing Xu",
+        "Yiling Zhu",
+        "Xinhai Liu",
+        "Lixin Xu",
+        "Changrong Hu",
+        "Shaoxiong Yang",
+        "Song Zhang",
+        "Yang Liu",
+        "Tianyu Huang",
+        "Lifu Wang",
+        "Jihong Zhang",
+        "Meng Chen",
+        "Liang Dong",
+        "Yiwen Jia",
+        "Yulin Cai",
+        "Jiaao Yu",
+        "Yixuan Tang",
+        "Hao Zhang",
+        "Zheng Ye",
+        "Peng He",
+        "Runzhou Wu",
+        "Chao Zhang",
+        "Yonghao Tan",
+        "Jie Xiao",
+        "Yangyu Tao",
+        "Jianchen Zhu",
+        "Jinbao Xue",
+        "Kai Liu",
+        "Chongqing Zhao",
+        "Xinming Wu",
+        "Zhichao Hu",
+        "Lei Qin",
+        "Jianbing Peng",
+        "Zhan Li",
+        "Minghui Chen",
+        "Xipeng Zhang",
+        "Lin Niu",
+        "Paige Wang",
+        "Yingkai Wang",
+        "Haozhao Kuang",
+        "Zhongyi Fan",
+        "Xu Zheng",
+        "Weihao Zhuang",
+        "YingPing He",
+        "Tian Liu",
+        "Yong Yang",
+        "Di Wang",
+        "Yuhong Liu",
+        "Jie Jiang",
+        "Jingwei Huang",
+        "Chunchao Guo"
+      ],
+      "summary": "We present Hunyuan3D 2.0, an advanced large-scale 3D synthesis system for generating high-resolution textured 3D assets. This system includes two foundation components: a large-scale shape generation model -- Hunyuan3D-DiT, and a large-scale texture synthesis model -- Hunyuan3D-Paint. The shape generative model, built on a scalable flow-based diffusion transformer, aims to create geometry that properly aligns with a given condition image, laying a solid foundation for downstream applications. The texture synthesis model, benefiting from strong geometric and diffusion priors, produces high-resolution and vibrant texture maps for either generated or hand-crafted meshes. Furthermore, we build Hunyuan3D-Studio -- a versatile, user-friendly production platform that simplifies the re-creation process of 3D assets. It allows both professional and amateur users to manipulate or even animate their meshes efficiently. We systematically evaluate our models, showing that Hunyuan3D 2.0 outperforms previous state-of-the-art models, including the open-source models and closed-source models in geometry details, condition alignment, texture quality, and etc. Hunyuan3D 2.0 is publicly released in order to fill the gaps in the open-source 3D community for large-scale foundation generative models. The code and pre-trained weights of our models are available at: https://github.com/Tencent/Hunyuan3D-2",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "Hunyuan3D 2.0: Scaling Diffusion Models for High Resolution Textured 3D Assets Generation",
+      "venue": "arXiv.org",
+      "citation_count": 487,
+      "s2_title": "Hunyuan3D 2.0: Scaling Diffusion Models for High Resolution Textured 3D Assets Generation",
+      "s2_year": 2025
+    },
+    {
+      "title": "Hunyuan3D 2.1: From Images to High-Fidelity 3D Assets with Production-Ready PBR Material",
+      "arxiv_id": "2506.15442",
+      "published": "2025-06-18",
+      "authors": [
+        "Team Hunyuan3D",
+        "Shuhui Yang",
+        "Mingxin Yang",
+        "Yifei Feng",
+        "Xin Huang",
+        "Sheng Zhang",
+        "Zebin He",
+        "Di Luo",
+        "Haolin Liu",
+        "Yunfei Zhao",
+        "Qingxiang Lin",
+        "Zeqiang Lai",
+        "Xianghui Yang",
+        "Huiwen Shi",
+        "Zibo Zhao",
+        "Bowen Zhang",
+        "Hongyu Yan",
+        "Lifu Wang",
+        "Sicong Liu",
+        "Jihong Zhang",
+        "Meng Chen",
+        "Liang Dong",
+        "Yiwen Jia",
+        "Yulin Cai",
+        "Jiaao Yu",
+        "Yixuan Tang",
+        "Dongyuan Guo",
+        "Junlin Yu",
+        "Hao Zhang",
+        "Zheng Ye",
+        "Peng He",
+        "Runzhou Wu",
+        "Shida Wei",
+        "Chao Zhang",
+        "Yonghao Tan",
+        "Yifu Sun",
+        "Lin Niu",
+        "Shirui Huang",
+        "Bojian Zheng",
+        "Shu Liu",
+        "Shilin Chen",
+        "Xiang Yuan",
+        "Xiaofeng Yang",
+        "Kai Liu",
+        "Jianchen Zhu",
+        "Peng Chen",
+        "Tian Liu",
+        "Di Wang",
+        "Yuhong Liu",
+        " Linus",
+        "Jie Jiang",
+        "Jingwei Huang",
+        "Chunchao Guo"
+      ],
+      "summary": "3D AI-generated content (AIGC) is a passionate field that has significantly accelerated the creation of 3D models in gaming, film, and design. Despite the development of several groundbreaking models that have revolutionized 3D generation, the field remains largely accessible only to researchers, developers, and designers due to the complexities involved in collecting, processing, and training 3D models. To address these challenges, we introduce Hunyuan3D 2.1 as a case study in this tutorial. This tutorial offers a comprehensive, step-by-step guide on processing 3D data, training a 3D generative model, and evaluating its performance using Hunyuan3D 2.1, an advanced system for producing high-resolution, textured 3D assets. The system comprises two core components: the Hunyuan3D-DiT for shape generation and the Hunyuan3D-Paint for texture synthesis. We will explore the entire workflow, including data preparation, model architecture, training strategies, evaluation metrics, and deployment. By the conclusion of this tutorial, you will have the knowledge to finetune or develop a robust 3D generative model suitable for applications in gaming, virtual reality, and industrial design.",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "query": "Hunyuan3D 2.1: From Images to High-Fidelity 3D Assets with Production-Ready PBR Material",
+      "venue": "arXiv.org",
+      "citation_count": 218,
+      "s2_title": "Hunyuan3D 2.1: From Images to High-Fidelity 3D Assets with Production-Ready PBR Material",
+      "s2_year": 2025
+    },
+    {
+      "title": "MeshGPT: Generating Triangle Meshes with Decoder-Only Transformers",
+      "arxiv_id": "2311.15475",
+      "published": "2023-11-27",
+      "authors": [
+        "Yawar Siddiqui",
+        "Antonio Alliegro",
+        "Alexey Artemov",
+        "Tatiana Tommasi",
+        "Daniele Sirigatti",
+        "Vladislav Rosov",
+        "Angela Dai",
+        "Matthias Nießner"
+      ],
+      "summary": "We introduce MeshGPT, a new approach for generating triangle meshes that reflects the compactness typical of artist-created meshes, in contrast to dense triangle meshes extracted by iso-surfacing methods from neural fields. Inspired by recent advances in powerful large language models, we adopt a sequence-based approach to autoregressively generate triangle meshes as sequences of triangles. We first learn a vocabulary of latent quantized embeddings, using graph convolutions, which inform these embeddings of the local mesh geometry and topology. These embeddings are sequenced and decoded into triangles by a decoder, ensuring that they can effectively reconstruct the mesh. A transformer is then trained on this learned vocabulary to predict the index of the next embedding given previous embeddings. Once trained, our model can be autoregressively sampled to generate new triangle meshes, directly generating compact meshes with sharp edges, more closely imitating the efficient triangulation patterns of human-crafted meshes. MeshGPT demonstrates a notable improvement over state of the art mesh generation methods, with a 9% increase in shape coverage and a 30-point enhancement in FID scores across various categories.",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "query": "MeshGPT: Generating Triangle Meshes with Decoder-Only Transformers",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 347,
+      "s2_title": "MeshGPT: Generating Triangle Meshes with Decoder-Only Transformers",
+      "s2_year": 2023
+    },
+    {
+      "title": "MeshAnything: Artist-Created Mesh Generation with Autoregressive Transformers",
+      "arxiv_id": "2406.10163",
+      "published": "2024-06-14",
+      "authors": [
+        "Yiwen Chen",
+        "Tong He",
+        "Di Huang",
+        "Weicai Ye",
+        "Sijin Chen",
+        "Jiaxiang Tang",
+        "Xin Chen",
+        "Zhongang Cai",
+        "Lei Yang",
+        "Gang Yu",
+        "Guosheng Lin",
+        "Chi Zhang"
+      ],
+      "summary": "Recently, 3D assets created via reconstruction and generation have matched the quality of manually crafted assets, highlighting their potential for replacement. However, this potential is largely unrealized because these assets always need to be converted to meshes for 3D industry applications, and the meshes produced by current mesh extraction methods are significantly inferior to Artist-Created Meshes (AMs), i.e., meshes created by human artists. Specifically, current mesh extraction methods rely on dense faces and ignore geometric features, leading to inefficiencies, complicated post-processing, and lower representation quality. To address these issues, we introduce MeshAnything, a model that treats mesh extraction as a generation problem, producing AMs aligned with specified shapes. By converting 3D assets in any 3D representation into AMs, MeshAnything can be integrated with various 3D asset production methods, thereby enhancing their application across the 3D industry. The architecture of MeshAnything comprises a VQ-VAE and a shape-conditioned decoder-only transformer. We first learn a mesh vocabulary using the VQ-VAE, then train the shape-conditioned decoder-only transformer on this vocabulary for shape-conditioned autoregressive mesh generation. Our extensive experiments show that our method generates AMs with hundreds of times fewer faces, significantly improving storage, rendering, and simulation efficiencies, while achieving precision comparable to previous methods.",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "query": "MeshAnything: Artist-Created Mesh Generation with Autoregressive Transformers",
+      "venue": "arXiv.org",
+      "citation_count": 177,
+      "s2_title": "MeshAnything: Artist-Created Mesh Generation with Autoregressive Transformers",
+      "s2_year": 2024
+    },
+    {
+      "title": "MeshAnything V2: Artist-Created Mesh Generation With Adjacent Mesh Tokenization",
+      "arxiv_id": "2408.02555",
+      "published": "2024-08-05",
+      "authors": [
+        "Yiwen Chen",
+        "Yikai Wang",
+        "Yihao Luo",
+        "Zhengyi Wang",
+        "Zilong Chen",
+        "Jun Zhu",
+        "Chi Zhang",
+        "Guosheng Lin"
+      ],
+      "summary": "Meshes are the de facto 3D representation in the industry but are labor-intensive to produce. Recently, a line of research has focused on autoregressively generating meshes. This approach processes meshes into a sequence composed of vertices and then generates them vertex by vertex, similar to how a language model generates text. These methods have achieved some success but still struggle to generate complex meshes. One primary reason for this limitation is their inefficient tokenization methods. To address this issue, we introduce MeshAnything V2, an advanced mesh generation model designed to create Artist-Created Meshes that align precisely with specified shapes. A key innovation behind MeshAnything V2 is our novel Adjacent Mesh Tokenization (AMT) method. Unlike traditional approaches that represent each face using three vertices, AMT optimizes this by employing a single vertex wherever feasible, effectively reducing the token sequence length by about half on average. This not only streamlines the tokenization process but also results in more compact and well-structured sequences, enhancing the efficiency of mesh generation. With these improvements, MeshAnything V2 effectively doubles the face limit compared to previous models, delivering superior performance without increasing computational costs. We will make our code and models publicly available. Project Page: https://buaacyw.github.io/meshanything-v2/",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR"
+      ],
+      "query": "MeshAnything V2: Artist-Created Mesh Generation with Adjacent Mesh Tokenization",
+      "venue": "IEEE International Conference on Computer Vision",
+      "citation_count": 125,
+      "s2_title": "MeshAnything V2: Artist-Created Mesh Generation with Adjacent Mesh Tokenization",
+      "s2_year": 2024
+    },
+    {
+      "title": "Hi3DGen: High-fidelity 3D Geometry Generation from Images via Normal Bridging",
+      "arxiv_id": "2503.22236",
+      "published": "2025-03-28",
+      "authors": [
+        "Chongjie Ye",
+        "Yushuang Wu",
+        "Ziteng Lu",
+        "Jiahao Chang",
+        "Xiaoyang Guo",
+        "Jiaqing Zhou",
+        "Hao Zhao",
+        "Xiaoguang Han"
+      ],
+      "summary": "With the growing demand for high-fidelity 3D models from 2D images, existing methods still face significant challenges in accurately reproducing fine-grained geometric details due to limitations in domain gaps and inherent ambiguities in RGB images. To address these issues, we propose Hi3DGen, a novel framework for generating high-fidelity 3D geometry from images via normal bridging. Hi3DGen consists of three key components: (1) an image-to-normal estimator that decouples the low-high frequency image pattern with noise injection and dual-stream training to achieve generalizable, stable, and sharp estimation; (2) a normal-to-geometry learning approach that uses normal-regularized latent diffusion learning to enhance 3D geometry generation fidelity; and (3) a 3D data synthesis pipeline that constructs a high-quality dataset to support training. Extensive experiments demonstrate the effectiveness and superiority of our framework in generating rich geometric details, outperforming state-of-the-art methods in terms of fidelity. Our work provides a new direction for high-fidelity 3D geometry generation from images by leveraging normal maps as an intermediate representation.",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "query": "Hi3DGen: High-fidelity 3D Geometry Generation from Images via Normal Bridging",
+      "venue": "IEEE International Conference on Computer Vision",
+      "citation_count": 122,
+      "s2_title": "Hi3dgen: High-Fidelity 3D Geometry Generation From Images Via Normal Bridging",
+      "s2_year": 2025
+    },
+    {
+      "title": "Step1X-3D: Towards High-Fidelity and Controllable Generation of Textured 3D Assets",
+      "arxiv_id": "2505.07747",
+      "published": "2025-05-12",
+      "authors": [
+        "Weiyu Li",
+        "Xuanyang Zhang",
+        "Zheng Sun",
+        "Di Qi",
+        "Hao Li",
+        "Wei Cheng",
+        "Weiwei Cai",
+        "Shihao Wu",
+        "Jiarui Liu",
+        "Zihao Wang",
+        "Xiao Chen",
+        "Feipeng Tian",
+        "Jianxiong Pan",
+        "Zeming Li",
+        "Gang Yu",
+        "Xiangyu Zhang",
+        "Daxin Jiang",
+        "Ping Tan"
+      ],
+      "summary": "While generative artificial intelligence has advanced significantly across text, image, audio, and video domains, 3D generation remains comparatively underdeveloped due to fundamental challenges such as data scarcity, algorithmic limitations, and ecosystem fragmentation. To this end, we present Step1X-3D, an open framework addressing these challenges through: (1) a rigorous data curation pipeline processing >5M assets to create a 2M high-quality dataset with standardized geometric and textural properties; (2) a two-stage 3D-native architecture combining a hybrid VAE-DiT geometry generator with an diffusion-based texture synthesis module; and (3) the full open-source release of models, training code, and adaptation modules. For geometry generation, the hybrid VAE-DiT component produces TSDF representations by employing perceiver-based latent encoding with sharp edge sampling for detail preservation. The diffusion-based texture synthesis module then ensures cross-view consistency through geometric conditioning and latent-space synchronization. Benchmark results demonstrate state-of-the-art performance that exceeds existing open-source methods, while also achieving competitive quality with proprietary solutions. Notably, the framework uniquely bridges the 2D and 3D generation paradigms by supporting direct transfer of 2D control techniques~(e.g., LoRA) to 3D synthesis. By simultaneously advancing data quality, algorithmic fidelity, and reproducibility, Step1X-3D aims to establish new standards for open research in controllable 3D asset generation.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "Step1X-3D: Towards High-Fidelity and Controllable Generation of Textured 3D Assets",
+      "venue": "arXiv.org",
+      "citation_count": 106,
+      "s2_title": "Step1X-3D: Towards High-Fidelity and Controllable Generation of Textured 3D Assets",
+      "s2_year": 2025
+    },
+    {
+      "title": "PartCrafter: Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers",
+      "arxiv_id": "2506.05573",
+      "published": "2025-06-05",
+      "authors": [
+        "Yuchen Lin",
+        "Chenguo Lin",
+        "Panwang Pan",
+        "Honglei Yan",
+        "Yiqiang Feng",
+        "Yadong Mu",
+        "Katerina Fragkiadaki"
+      ],
+      "summary": "We introduce PartCrafter, the first structured 3D generative model that jointly synthesizes multiple semantically meaningful and geometrically distinct 3D meshes from a single RGB image. Unlike existing methods that either produce monolithic 3D shapes or follow two-stage pipelines, i.e., first segmenting an image and then reconstructing each segment, PartCrafter adopts a unified, compositional generation architecture that does not rely on pre-segmented inputs. Conditioned on a single image, it simultaneously denoises multiple 3D parts, enabling end-to-end part-aware generation of both individual objects and complex multi-object scenes. PartCrafter builds upon a pretrained 3D mesh diffusion transformer (DiT) trained on whole objects, inheriting the pretrained weights, encoder, and decoder, and introduces two key innovations: (1) A compositional latent space, where each 3D part is represented by a set of disentangled latent tokens; (2) A hierarchical attention mechanism that enables structured information flow both within individual parts and across all parts, ensuring global coherence while preserving part-level detail during generation. To support part-level supervision, we curate a new dataset by mining part-level annotations from large-scale 3D object datasets. Experiments show that PartCrafter outperforms existing approaches in generating decomposable 3D meshes, including parts that are not directly visible in input images, demonstrating the strength of part-aware generative priors for 3D understanding and synthesis. Code and training data will be released.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "PartCrafter: Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers",
+      "venue": "Neural Information Processing Systems",
+      "citation_count": 107,
+      "s2_title": "PartCrafter: Structured 3D Mesh Generation via Compositional Latent Diffusion Transformers",
+      "s2_year": 2025
+    },
+    {
+      "title": "Text2Room: Extracting Textured 3D Meshes from 2D Text-to-Image Models",
+      "arxiv_id": "2303.11989",
+      "published": "2023-03-21",
+      "authors": [
+        "Lukas Höllein",
+        "Ang Cao",
+        "Andrew Owens",
+        "Justin Johnson",
+        "Matthias Nießner"
+      ],
+      "summary": "We present Text2Room, a method for generating room-scale textured 3D meshes from a given text prompt as input. To this end, we leverage pre-trained 2D text-to-image models to synthesize a sequence of images from different poses. In order to lift these outputs into a consistent 3D scene representation, we combine monocular depth estimation with a text-conditioned inpainting model. The core idea of our approach is a tailored viewpoint selection such that the content of each image can be fused into a seamless, textured 3D mesh. More specifically, we propose a continuous alignment strategy that iteratively fuses scene frames with the existing geometry to create a seamless mesh. Unlike existing works that focus on generating single objects or zoom-out trajectories from text, our method generates complete 3D scenes with multiple objects and explicit 3D geometry. We evaluate our approach using qualitative and quantitative metrics, demonstrating it as the first method to generate room-scale 3D geometry with compelling textures from only text as input.",
+      "categories": [
+        "cs.CV"
+      ],
+      "query": "Text2Room: Extracting Textured 3D Meshes from 2D Text-to-Image Models",
+      "venue": "IEEE International Conference on Computer Vision",
+      "citation_count": 326,
+      "s2_title": "Text2Room: Extracting Textured 3D Meshes from 2D Text-to-Image Models",
+      "s2_year": 2023
+    },
+    {
+      "title": "WonderWorld: Interactive 3D Scene Generation from a Single Image",
+      "arxiv_id": "2406.09394",
+      "published": "2024-06-13",
+      "authors": [
+        "Hong-Xing Yu",
+        "Haoyi Duan",
+        "Charles Herrmann",
+        "William T. Freeman",
+        "Jiajun Wu"
+      ],
+      "summary": "We present WonderWorld, a novel framework for interactive 3D scene generation that enables users to interactively specify scene contents and layout and see the created scenes in low latency. The major challenge lies in achieving fast generation of 3D scenes. Existing scene generation approaches fall short of speed as they often require (1) progressively generating many views and depth maps, and (2) time-consuming optimization of the scene geometry representations. We introduce the Fast Layered Gaussian Surfels (FLAGS) as our scene representation and an algorithm to generate it from a single view. Our approach does not need multiple views, and it leverages a geometry-based initialization that significantly reduces optimization time. Another challenge is generating coherent geometry that allows all scenes to be connected. We introduce the guided depth diffusion that allows partial conditioning of depth estimation. WonderWorld generates connected and diverse 3D scenes in less than 10 seconds on a single A6000 GPU, enabling real-time user interaction and exploration. We demonstrate the potential of WonderWorld for user-driven content creation and exploration in virtual environments. We release full code and software for reproducibility. Project website: https://kovenyu.com/WonderWorld/.",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "query": "WonderWorld: Interactive 3D Scene Generation from a Single Image",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 254,
+      "s2_title": "WonderWorld: Interactive 3D Scene Generation from a Single Image",
+      "s2_year": 2024
+    },
+    {
+      "title": "WorldGen: From Text to Traversable and Interactive 3D Worlds",
+      "arxiv_id": "2511.16825",
+      "published": "2025-11-20",
+      "authors": [
+        "Dilin Wang",
+        "Hyunyoung Jung",
+        "Tom Monnier",
+        "Kihyuk Sohn",
+        "Chuhang Zou",
+        "Xiaoyu Xiang",
+        "Yu-Ying Yeh",
+        "Di Liu",
+        "Zixuan Huang",
+        "Thu Nguyen-Phuoc",
+        "Yuchen Fan",
+        "Sergiu Oprea",
+        "Ziyan Wang",
+        "Roman Shapovalov",
+        "Nikolaos Sarafianos",
+        "Thibault Groueix",
+        "Antoine Toisoul",
+        "Prithviraj Dhar",
+        "Xiao Chu",
+        "Minghao Chen",
+        "Geon Yeong Park",
+        "Mahima Gupta",
+        "Yassir Azziz",
+        "Rakesh Ranjan",
+        "Andrea Vedaldi"
+      ],
+      "summary": "We introduce WorldGen, a system that enables the automatic creation of large-scale, interactive 3D worlds directly from text prompts. Our approach transforms natural language descriptions into traversable, fully textured environments that can be immediately explored or edited within standard game engines. By combining LLM-driven scene layout reasoning, procedural generation, diffusion-based 3D generation, and object-aware scene decomposition, WorldGen bridges the gap between creative intent and functional virtual spaces, allowing creators to design coherent, navigable worlds without manual modeling or specialized 3D expertise. The system is fully modular and supports fine-grained control over layout, scale, and style, producing worlds that are geometrically consistent, visually rich, and efficient to render in real time. This work represents a step towards accessible, generative world-building at scale, advancing the frontier of 3D generative AI for applications in gaming, simulation, and immersive social environments.",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "query": "WorldGen: From Text to Traversable and Interactive 3D Worlds",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 25,
+      "s2_title": "WorldGen: From Text to Traversable and Interactive 3D Worlds",
+      "s2_year": 2025
+    },
+    {
+      "title": "pixelNeRF: Neural Radiance Fields from One or Few Images",
+      "arxiv_id": "2012.02190",
+      "published": "2020-12-03",
+      "authors": [
+        "Alex Yu",
+        "Vickie Ye",
+        "Matthew Tancik",
+        "Angjoo Kanazawa"
+      ],
+      "summary": "We propose pixelNeRF, a learning framework that predicts a continuous neural scene representation conditioned on one or few input images. The existing approach for constructing neural radiance fields involves optimizing the representation to every scene independently, requiring many calibrated views and significant compute time. We take a step towards resolving these shortcomings by introducing an architecture that conditions a NeRF on image inputs in a fully convolutional manner. This allows the network to be trained across multiple scenes to learn a scene prior, enabling it to perform novel view synthesis in a feed-forward manner from a sparse set of views (as few as one). Leveraging the volume rendering approach of NeRF, our model can be trained directly from images with no explicit 3D supervision. We conduct extensive experiments on ShapeNet benchmarks for single image novel view synthesis tasks with held-out objects as well as entire unseen categories. We further demonstrate the flexibility of pixelNeRF by demonstrating it on multi-object ShapeNet scenes and real scenes from the DTU dataset. In all cases, pixelNeRF outperforms current state-of-the-art baselines for novel view synthesis and single image 3D reconstruction. For the video and code, please visit the project website: https://alexyu.net/pixelnerf",
+      "categories": [
+        "cs.CV",
+        "cs.GR",
+        "cs.LG"
+      ],
+      "query": "pixelNeRF: Neural Radiance Fields from One or Few Images",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 2398,
+      "s2_title": "pixelNeRF: Neural Radiance Fields from One or Few Images",
+      "s2_year": 2020
+    },
+    {
+      "title": "Objaverse: A Universe of Annotated 3D Objects",
+      "arxiv_id": "2212.08051",
+      "published": "2022-12-15",
+      "authors": [
+        "Matt Deitke",
+        "Dustin Schwenk",
+        "Jordi Salvador",
+        "Luca Weihs",
+        "Oscar Michel",
+        "Eli VanderBilt",
+        "Ludwig Schmidt",
+        "Kiana Ehsani",
+        "Aniruddha Kembhavi",
+        "Ali Farhadi"
+      ],
+      "summary": "Massive data corpora like WebText, Wikipedia, Conceptual Captions, WebImageText, and LAION have propelled recent dramatic progress in AI. Large neural models trained on such datasets produce impressive results and top many of today's benchmarks. A notable omission within this family of large-scale datasets is 3D data. Despite considerable interest and potential applications in 3D vision, datasets of high-fidelity 3D models continue to be mid-sized with limited diversity of object categories. Addressing this gap, we present Objaverse 1.0, a large dataset of objects with 800K+ (and growing) 3D models with descriptive captions, tags, and animations. Objaverse improves upon present day 3D repositories in terms of scale, number of categories, and in the visual diversity of instances within a category. We demonstrate the large potential of Objaverse via four diverse applications: training generative 3D models, improving tail category segmentation on the LVIS benchmark, training open-vocabulary object-navigation models for Embodied AI, and creating a new benchmark for robustness analysis of vision models. Objaverse can open new directions for research and enable new applications across the field of AI.",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR",
+        "cs.RO"
+      ],
+      "query": "Objaverse: A Universe of Annotated 3D Objects",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 1963,
+      "s2_title": "Objaverse: A Universe of Annotated 3D Objects",
+      "s2_year": 2022
+    },
+    {
+      "title": "Objaverse-XL: A Universe of 10M+ 3D Objects",
+      "arxiv_id": "2307.05663",
+      "published": "2023-07-11",
+      "authors": [
+        "Matt Deitke",
+        "Ruoshi Liu",
+        "Matthew Wallingford",
+        "Huong Ngo",
+        "Oscar Michel",
+        "Aditya Kusupati",
+        "Alan Fan",
+        "Christian Laforte",
+        "Vikram Voleti",
+        "Samir Yitzhak Gadre",
+        "Eli VanderBilt",
+        "Aniruddha Kembhavi",
+        "Carl Vondrick",
+        "Georgia Gkioxari",
+        "Kiana Ehsani",
+        "Ludwig Schmidt",
+        "Ali Farhadi"
+      ],
+      "summary": "Natural language processing and 2D vision models have attained remarkable proficiency on many tasks primarily by escalating the scale of training data. However, 3D vision tasks have not seen the same progress, in part due to the challenges of acquiring high-quality 3D data. In this work, we present Objaverse-XL, a dataset of over 10 million 3D objects. Our dataset comprises deduplicated 3D objects from a diverse set of sources, including manually designed objects, photogrammetry scans of landmarks and everyday items, and professional scans of historic and antique artifacts. Representing the largest scale and diversity in the realm of 3D datasets, Objaverse-XL enables significant new possibilities for 3D vision. Our experiments demonstrate the improvements enabled with the scale provided by Objaverse-XL. We show that by training Zero123 on novel view synthesis, utilizing over 100 million multi-view rendered images, we achieve strong zero-shot generalization abilities. We hope that releasing Objaverse-XL will enable further innovations in the field of 3D vision at scale.",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "query": "Objaverse-XL: A Universe of 10M+ 3D Objects",
+      "venue": "Neural Information Processing Systems",
+      "citation_count": 974,
+      "s2_title": "Objaverse-XL: A Universe of 10M+ 3D Objects",
+      "s2_year": 2023
+    },
+    {
+      "title": "A Survey on 3D Gaussian Splatting",
+      "arxiv_id": "2401.03890",
+      "published": "2024-01-08",
+      "authors": [
+        "Guikun Chen",
+        "Wenguan Wang"
+      ],
+      "summary": "3D Gaussian splatting (GS) has emerged as a transformative technique in radiance fields. Unlike mainstream implicit neural models, 3D GS uses millions of learnable 3D Gaussians for an explicit scene representation. Paired with a differentiable rendering algorithm, this approach achieves real-time rendering and unprecedented editability, making it a potential game-changer for 3D reconstruction and representation. In the present paper, we provide the first systematic overview of the recent developments and critical contributions in 3D GS. We begin with a detailed exploration of the underlying principles and the driving forces behind the emergence of 3D GS, laying the groundwork for understanding its significance. A focal point of our discussion is the practical applicability of 3D GS. By enabling unprecedented rendering speed, 3D GS opens up a plethora of applications, ranging from virtual reality to interactive media and beyond. This is complemented by a comparative analysis of leading 3D GS models, evaluated across various benchmark tasks to highlight their performance and practical utility. The survey concludes by identifying current challenges and suggesting potential avenues for future research. Through this survey, we aim to provide a valuable resource for both newcomers and seasoned researchers, fostering further exploration and advancement in explicit radiance field.",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.GR",
+        "cs.MM"
+      ],
+      "query": "A Survey on 3D Gaussian Splatting",
+      "venue": "ACM Computing Surveys",
+      "citation_count": 398,
+      "s2_title": "A Survey on 3D Gaussian Splatting",
+      "s2_year": 2024
+    },
+    {
+      "title": "SceneCraft: An LLM Agent for Synthesizing 3D Scene as Blender Code",
+      "arxiv_id": "2403.01248",
+      "published": "2024-03-02",
+      "authors": [
+        "Ziniu Hu",
+        "Ahmet Iscen",
+        "Aashi Jain",
+        "Thomas Kipf",
+        "Yisong Yue",
+        "David A. Ross",
+        "Cordelia Schmid",
+        "Alireza Fathi"
+      ],
+      "summary": "This paper introduces SceneCraft, a Large Language Model (LLM) Agent converting text descriptions into Blender-executable Python scripts which render complex scenes with up to a hundred 3D assets. This process requires complex spatial planning and arrangement. We tackle these challenges through a combination of advanced abstraction, strategic planning, and library learning. SceneCraft first models a scene graph as a blueprint, detailing the spatial relationships among assets in the scene. SceneCraft then writes Python scripts based on this graph, translating relationships into numerical constraints for asset layout. Next, SceneCraft leverages the perceptual strengths of vision-language foundation models like GPT-V to analyze rendered images and iteratively refine the scene. On top of this process, SceneCraft features a library learning mechanism that compiles common script functions into a reusable library, facilitating continuous self-improvement without expensive LLM parameter tuning. Our evaluation demonstrates that SceneCraft surpasses existing LLM-based agents in rendering complex scenes, as shown by its adherence to constraints and favorable human assessments. We also showcase the broader application potential of SceneCraft by reconstructing detailed 3D scenes from the Sintel movie and guiding a video generative model with generated scenes as intermediary control signal.",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "query": "SceneCraft: An LLM Agent for Synthesizing 3D Scene as Blender Code",
+      "venue": "International Conference on Machine Learning",
+      "citation_count": 185,
+      "s2_title": "SceneCraft: An LLM Agent for Synthesizing 3D Scene as Blender Code",
+      "s2_year": 2024
+    },
+    {
+      "title": "PhysDreamer: Physics-Based Interaction with 3D Objects via Video Generation",
+      "arxiv_id": "2404.13026",
+      "published": "2024-04-19",
+      "authors": [
+        "Tianyuan Zhang",
+        "Hong-Xing Yu",
+        "Rundi Wu",
+        "Brandon Y. Feng",
+        "Changxi Zheng",
+        "Noah Snavely",
+        "Jiajun Wu",
+        "William T. Freeman"
+      ],
+      "summary": "Realistic object interactions are crucial for creating immersive virtual experiences, yet synthesizing realistic 3D object dynamics in response to novel interactions remains a significant challenge. Unlike unconditional or text-conditioned dynamics generation, action-conditioned dynamics requires perceiving the physical material properties of objects and grounding the 3D motion prediction on these properties, such as object stiffness. However, estimating physical material properties is an open problem due to the lack of material ground-truth data, as measuring these properties for real objects is highly difficult. We present PhysDreamer, a physics-based approach that endows static 3D objects with interactive dynamics by leveraging the object dynamics priors learned by video generation models. By distilling these priors, PhysDreamer enables the synthesis of realistic object responses to novel interactions, such as external forces or agent manipulations. We demonstrate our approach on diverse examples of elastic objects and evaluate the realism of the synthesized interactions through a user study. PhysDreamer takes a step towards more engaging and realistic virtual experiences by enabling static 3D objects to dynamically respond to interactive stimuli in a physically plausible manner. See our project page at https://physdreamer.github.io/.",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "query": "PhysDreamer: Physics-Based Interaction with 3D Objects via Video Generation",
+      "venue": "European Conference on Computer Vision",
+      "citation_count": 258,
+      "s2_title": "PhysDreamer: Physics-Based Interaction with 3D Objects via Video Generation",
+      "s2_year": 2024
+    },
+    {
+      "title": "SF3D: Stable Fast 3D Mesh Reconstruction with UV-unwrapping and Illumination Disentanglement",
+      "arxiv_id": "2408.00653",
+      "published": "2024-08-01",
+      "authors": [
+        "Mark Boss",
+        "Zixuan Huang",
+        "Aaryaman Vasishta",
+        "Varun Jampani"
+      ],
+      "summary": "We present SF3D, a novel method for rapid and high-quality textured object mesh reconstruction from a single image in just 0.5 seconds. Unlike most existing approaches, SF3D is explicitly trained for mesh generation, incorporating a fast UV unwrapping technique that enables swift texture generation rather than relying on vertex colors. The method also learns to predict material parameters and normal maps to enhance the visual quality of the reconstructed 3D meshes. Furthermore, SF3D integrates a delighting step to effectively remove low-frequency illumination effects, ensuring that the reconstructed meshes can be easily used in novel illumination conditions. Experiments demonstrate the superior performance of SF3D over the existing techniques. Project page: https://stable-fast-3d.github.io",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "query": "SF3D: Stable Fast 3D Mesh Reconstruction with UV-unwrapping and Illumination Disentanglement",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 109,
+      "s2_title": "SF3D: Stable Fast 3D Mesh Reconstruction with UV-unwrapping and Illumination Disentanglement",
+      "s2_year": 2024
+    },
+    {
+      "title": "CraftsMan3D: High-fidelity Mesh Generation with 3D Native Generation and Interactive Geometry Refiner",
+      "arxiv_id": "2405.14979",
+      "published": "2024-05-23",
+      "authors": [
+        "Weiyu Li",
+        "Jiarui Liu",
+        "Hongyu Yan",
+        "Rui Chen",
+        "Yixun Liang",
+        "Xuelin Chen",
+        "Ping Tan",
+        "Xiaoxiao Long"
+      ],
+      "summary": "We present a novel generative 3D modeling system, coined CraftsMan, which can generate high-fidelity 3D geometries with highly varied shapes, regular mesh topologies, and detailed surfaces, and, notably, allows for refining the geometry in an interactive manner. Despite the significant advancements in 3D generation, existing methods still struggle with lengthy optimization processes, irregular mesh topologies, noisy surfaces, and difficulties in accommodating user edits, consequently impeding their widespread adoption and implementation in 3D modeling software. Our work is inspired by the craftsman, who usually roughs out the holistic figure of the work first and elaborates the surface details subsequently. Specifically, we employ a 3D native diffusion model, which operates on latent space learned from latent set-based 3D representations, to generate coarse geometries with regular mesh topology in seconds. In particular, this process takes as input a text prompt or a reference image and leverages a powerful multi-view (MV) diffusion model to generate multiple views of the coarse geometry, which are fed into our MV-conditioned 3D diffusion model for generating the 3D geometry, significantly improving robustness and generalizability. Following that, a normal-based geometry refiner is used to significantly enhance the surface details. This refinement can be performed automatically, or interactively with user-supplied edits. Extensive experiments demonstrate that our method achieves high efficacy in producing superior-quality 3D assets compared to existing methods. HomePage: https://craftsman3d.github.io/, Code: https://github.com/wyysf-98/CraftsMan",
+      "categories": [
+        "cs.GR",
+        "cs.CV"
+      ],
+      "query": "CraftsMan3D: High-fidelity Mesh Generation with 3D Native Generation and Interactive Geometry Refiner",
+      "venue": "",
+      "citation_count": 133,
+      "s2_title": "CraftsMan3D: High-fidelity Mesh Generation with 3D Native Generation and Interactive Geometry Refiner",
+      "s2_year": 2024
+    },
+    {
+      "title": "Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation",
+      "arxiv_id": "2212.00774",
+      "published": "2022-12-01",
+      "authors": [
+        "Haochen Wang",
+        "Xiaodan Du",
+        "Jiahao Li",
+        "Raymond A. Yeh",
+        "Greg Shakhnarovich"
+      ],
+      "summary": "A diffusion model learns to predict a vector field of gradients. We propose to apply chain rule on the learned gradients, and back-propagate the score of a diffusion model through the Jacobian of a differentiable renderer, which we instantiate to be a voxel radiance field. This setup aggregates 2D scores at multiple camera viewpoints into a 3D score, and repurposes a pretrained 2D model for 3D data generation. We identify a technical challenge of distribution mismatch that arises in this application, and propose a novel estimation mechanism to resolve it. We run our algorithm on several off-the-shelf diffusion image generative models, including the recently released Stable Diffusion trained on the large-scale LAION dataset.",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "query": "Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation",
+      "venue": "Computer Vision and Pattern Recognition",
+      "citation_count": 715,
+      "s2_title": "Score Jacobian Chaining: Lifting Pretrained 2D Diffusion Models for 3D Generation",
+      "s2_year": 2022
+    },
+    {
+      "title": "MeshLRM: Large Reconstruction Model for High-Quality Meshes",
+      "arxiv_id": "2404.12385",
+      "published": "2024-04-18",
+      "authors": [
+        "Xinyue Wei",
+        "Kai Zhang",
+        "Sai Bi",
+        "Hao Tan",
+        "Fujun Luan",
+        "Valentin Deschaintre",
+        "Kalyan Sunkavalli",
+        "Hao Su",
+        "Zexiang Xu"
+      ],
+      "summary": "We propose MeshLRM, a novel LRM-based approach that can reconstruct a high-quality mesh from merely four input images in less than one second. Different from previous large reconstruction models (LRMs) that focus on NeRF-based reconstruction, MeshLRM incorporates differentiable mesh extraction and rendering within the LRM framework. This allows for end-to-end mesh reconstruction by fine-tuning a pre-trained NeRF LRM with mesh rendering. Moreover, we improve the LRM architecture by simplifying several complex designs in previous LRMs. MeshLRM's NeRF initialization is sequentially trained with low- and high-resolution images; this new LRM training strategy enables significantly faster convergence and thereby leads to better quality with less compute. Our approach achieves state-of-the-art mesh reconstruction from sparse-view inputs and also allows for many downstream applications, including text-to-3D and single-image-to-3D generation. Project page: https://sarahweiii.github.io/meshlrm/",
+      "categories": [
+        "cs.CV",
+        "cs.GR"
+      ],
+      "query": "MeshLRM: Large Reconstruction Model for High-Quality Meshes",
+      "venue": "arXiv.org",
+      "citation_count": 159,
+      "s2_title": "MeshLRM: Large Reconstruction Model for High-Quality Mesh",
+      "s2_year": 2024
+    }
+  ],
+  "misses": [
+    {
+      "query": "3D Generation on the Web: A Survey of Text-to-3D",
+      "candidates": []
+    }
+  ]
+}

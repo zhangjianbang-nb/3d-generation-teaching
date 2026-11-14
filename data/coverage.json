@@ -1,0 +1,54 @@
+{
+ "searched": {
+  "google_scholar": {
+   "status": "blocked",
+   "fallback": "arXiv API + Semantic Scholar batch API",
+   "queries": [
+    "text-to-3D score distillation",
+    "image-to-3D large reconstruction model",
+    "3D Gaussian splatting generation",
+    "mesh generation autoregressive transformer",
+    "3D scene generation world model"
+   ],
+   "date": "2026-11-13"
+  },
+  "chatgpt": {
+   "status": "ok",
+   "sessions": 1,
+   "archive": "research/chatgpt/review-20261113.txt",
+   "date": "2026-11-13",
+   "note": "已就 8 方向划分、五段演进主线与判断 A–E 做外部评审；采纳/驳回逐条见 research/chatgpt/decisions.md。"
+  },
+  "youtube": {
+   "status": "partial",
+   "videos": 3,
+   "note": "已核对 3 个视频的标题与链接（3DGS 两则、DreamFusion 一则），未做逐字转写：https://www.youtube.com/watch?v=VkIJbpdTujE 、https://www.youtube.com/watch?v=Tnij_xHEnXc 、https://www.youtube.com/watch?v=5f0JXBQ1ZYQ"
+  }
+ },
+ "covered_directions": [
+  "d3-scene-recon",
+  "d3-native-rep",
+  "d3-sds",
+  "d3-multiview",
+  "d3-feedforward",
+  "d3-mesh-topo",
+  "d3-scene-world",
+  "d3-data-production"
+ ],
+ "gaps": [
+  {
+   "item": "视频/4D 生成（动态 3D、可动画资产）",
+   "reason": "本次检索聚焦静态物体与场景，动态 4D 生成仅作为未来工作提及，未纳入论文库。"
+  },
+  {
+   "item": "3D 生成的版权、水印与安全",
+   "reason": "工业界关注度高但学术论文分散，缺乏统一基准，未单列方向。"
+  },
+  {
+   "item": "传统 CAD/程序化建模与生成模型的结合",
+   "reason": "与 AI 生成主线交叉但文献口径不一，本次只在场景方向的 LLM-Blender 代码路线中触及。"
+  }
+ ],
+ "limitations": "Google Scholar 与部分出版社页面在本次检索中被拦截，覆盖度主要依赖 arXiv API 与 Semantic Scholar；49 篇论文均经标题精确匹配核验，但 venue 与引用数为 2026-11-13 的快照，可能随后续更新变化。中文资料以团队技术博客与论文解读为主，未做系统检索。",
+ "verified_at": "2026-11-13"
+}

@@ -1,0 +1,55 @@
+<h3>二 · 从映射学习到规模项：公式怎么推出来</h3>
+<p>把 3D 生成写成映射学习，是为了让“规模决定上限”这句话可以被拆成可计算的项。设输入为条件 <span class="math">c</span>（单张图、文本或相机位姿），输出为目标视角或三维表示 <span class="math">y</span>，模型参数为 <span class="math">\theta</span>。训练目标是最小化期望风险：</p>
+<div class="formula">$$\mathcal{R}(\theta)=\mathbb{E}_{(c,y)\sim p_{\mathrm{data}}}\left[\ell\big(f_\theta(c),y\big)\right]$$</div>
+<p>这里 <span class="math">p_{\mathrm{data}}</span> 是真实世界 3D 资产及其渲染条件的联合分布。工程上拿不到它，只能用数据集 <span class="math">\mathcal{D}</span> 的经验分布 <span class="math">\hat{p}_{\mathcal{D}}</span> 代替。于是优化的是经验风险 <span class="math">\hat{\mathcal{R}}_{\mathcal{D}}(\theta)</span>。两者之差就是泛化间隙，它随 <span class="math">|\mathcal{D}|</span> 增大而收缩，但收缩速度受分布覆盖程度制约。把数据集写成并集形式：</p>
+<div class="formula">$$\mathcal{D}_{\mathrm{XL}}=\bigcup_{s\in\mathcal{S}}\mathcal{D}_s$$</div>
+<p><span class="math">\mathcal{S}</span> 是来源集合，每个 <span class="math">\mathcal{D}_s</span> 是一个子集（不同采集批次、不同许可条款、不同渲染管线）。这个并集不是简单相加：子集之间存在重叠、重复和风格偏置，直接并集会让经验分布向某些来源倾斜。因此规模项不能只写 <span class="math">|\mathcal{D}|</span>，质量函数必须同时包含多样性与质量：</p>
+<div class="formula">$$\mathrm{Quality}=f(|\mathcal{D}|,\mathrm{diversity},\mathrm{quality})$$</div>
+<p>符号含义要落到工程量上。<span class="math">|\mathcal{D}|</span> 是资产或渲染图计数；<span class="math">\mathrm{diversity}</span> 可操作为类别熵、视角方位角覆盖、材质词表覆盖率；<span class="math">\mathrm{quality}</span> 可操作为渲染分辨率、几何完整度、水密性比例。三者不是独立可加的：低质量样本会稀释有效规模，重复样本会降低多样性增益。一个可用的近似是把有效规模写成加权计数：</p>
+<div class="formula">$$|\mathcal{D}|_{\mathrm{eff}}=\sum_{i=1}^{|\mathcal{D}|} w_i,\qquad w_i=q_i\cdot \frac{1}{1+r_i}$$</div>
+<p><span class="math">q_i</span> 是样本质量分，<span class="math">r_i</span> 是该样本在特征空间中的重复度。这个式子不是定理，而是把“规模、质量、重复”三个事实压进一个可监控的量，便于在训练前做数据审计。推导的落点是：规模提升收益来自泛化间隙收缩，但有效规模受质量与重复折损，所以曲线必然出现递减。</p>
+<p>具体机制上，Zero-1-to-3 这类新视角合成模型学习的是“给定输入视角与相对相机变换，预测目标视角”的条件映射。数据覆盖的类别、视角、材质越广，模型对未见物体的先验越完整。这里的先验不是抽象说法：它表现为模型在输入视角与目标视角差异较大时仍能补全不可见区域，而这部分能力只能由训练集中出现过的相似几何与材质组合支撑。系统代价在于，扩大并集需要统一渲染管线，不同来源的资产坐标系、尺度、材质定义不一致，合并前要做归一化，归一化本身会引入误差。失败模式是：并集扩大但归一化错误，导致模型学到的是管线伪影而非物体先验，规模上去指标不升。</p>
+
+<h3>三 · 数值例子：从 80 万到 1000 万再到 1 亿</h3>
+<p>用给定事实做一个可复现的数值推演。Zero-1-to-3 在 Objaverse 80 万资产上训练，新视角 PSNR 约 18。扩到 Objaverse-XL 1000 万资产、1 亿渲染图后，PSNR 提升 2–3 dB。继续扩到 1 亿资产，收益变小但方向仍正。把这三档写成规模序列：</p>
+<table class="mini"><thead><tr><th>档位</th><th>资产规模</th><th>渲染图规模</th><th>新视角 PSNR 表现</th></tr></thead><tbody>
+<tr><td>第一档</td><td>80 万（Objaverse）</td><td>未给出</td><td>约 18 dB</td></tr>
+<tr><td>第二档</td><td>1000 万（Objaverse-XL）</td><td>1 亿</td><td>提升 2–3 dB</td></tr>
+<tr><td>第三档</td><td>1 亿</td><td>未给出</td><td>收益变小，方向仍正</td></tr>
+</tbody></table>
+<p>从第一档到第二档，资产规模放大约 12.5 倍，渲染图达到 1 亿。PSNR 提升 2–3 dB 在图像质量上是可感知的：PSNR 每增加 3 dB 意味着均方误差减半。这说明规模项在这一段仍是主导项。从第二档到第三档，资产再放大约 10 倍，收益变小。这不是规模无效，而是有效规模增速放缓：并集里新增的子集与已有分布重叠更多，重复度 <span class="math">r_i</span> 上升，质量分 <span class="math">q_i</span> 因长尾资产质量参差而下降，二者共同压低 <span class="|\mathcal{D}|_{\mathrm{eff}}</span> 的边际增量。</p>
+<p>把递减写成可检验的形式。设规模 <span class="math">n</span> 下的指标为 <span class="math">M(n)</span>，用幂律近似：</p>
+<div class="formula">$$M(n)=M_\infty - A n^{-\alpha}$$</div>
+<p><span class="math">M_\infty</span> 是数据分布覆盖充分时的上界，<span class="math">\alpha</span> 是递减指数。用给定事实只能定性判断 <span class="math">\alpha</span> 在第二档之后变小，不能编造具体数值。工程含义是：当 <span class="math">n</span> 已经很大时，继续堆计数的收益让位于提升 <span class="math">\mathrm{diversity}</span> 与 <span class="math">\mathrm{quality}</span>。一个具体例子是长尾类别：若新增 1000 万资产中大部分是已有类别的变体，类别熵不增，模型对未见类别的先验不会变好，PSNR 提升就落在重复样本带来的微小正则化上。</p>
+<p>系统代价在这里最直接：1 亿渲染图的训练不是免费扩容。渲染图数量与资产数量不是一一对应，多视角渲染会成倍放大存储与 IO；训练时的采样策略要保证视角覆盖，否则模型过拟合到少数方位角。失败模式是“规模上去但评测不涨”：若新增数据全部来自同一采集管线，材质与光照分布单一，模型会把管线特征当成物体先验，在跨管线评测上掉点。判断依据不是训练 loss，而是留出集上按类别、按视角分桶的指标。</p>
+
+<h3>四 · 伪代码思路：规模扫描怎么组织</h3>
+<p>规模扫描的实验骨架要保证“只变规模、不变其他”。给定伪代码思路：</p>
+<ul>
+<li>对 <span class="math">n</span> 取 <span class="math">[10^5, 10^6, 10^7]</span> 三档，从 Objaverse-XL 中按统一采样器抽取子集。</li>
+<li>对每个子集用同一渲染管线生成渲染图，固定视角采样数与分辨率。</li>
+<li>用同一模型初始化与同一训练配置训练 Zero-1-to-3 类模型。</li>
+<li>在固定评测集上报告新视角指标，并按类别与视角分桶。</li>
+</ul>
+<p>写成结构化伪代码：</p>
+<div class="formula">$$\begin{aligned}
+&\textbf{for } n \in \{10^5,10^6,10^7\}:\\
+&\quad \mathcal{D}_n \leftarrow \mathrm{sample}(\mathcal{D}_{\mathrm{XL}}, n)\\
+&\quad \mathcal{R}_n \leftarrow \mathrm{render}(\mathcal{D}_n, \mathrm{views}=V)\\
+&\quad \theta_n \leftarrow \mathrm{train}(\mathrm{zero123}, \mathcal{R}_n)\\
+&\quad \mathrm{report}\big(\mathrm{eval}(\theta_n)\big)
+\end{aligned}$$</div>
+<p>关键机制在采样器。<span class="math">\mathrm{sample}</span> 不能是均匀随机：Objaverse-XL 的来源并集有偏，均匀抽样会让某些来源主导小规模档，导致规模扫描混入分布变化。正确做法是分层抽样，按来源、类别、视角覆盖做配额，使各档的 <span class="math">\mathrm{diversity}</span> 尽量一致。这样 <span class="math">n</span> 才是唯一变量。系统代价是分层抽样需要预先计算每个资产的元特征，元特征提取本身要跑一遍渲染或几何分析，成本随并集规模线性增长。失败模式是采样器泄漏：若小档抽样时无意中偏向高质量子集，曲线会显得比真实更陡，误导后续扩容决策。</p>
+<p>评测端也要固定。新视角 PSNR 对评测视角分布敏感，若各档用不同评测视角，比较无效。工程上把评测集切成“同分布”与“跨来源”两组：同分布组看规模收益，跨来源组看泛化。一个具体例子是：第二档相对第一档在同分布组提升 2–3 dB，但若跨来源组不升，说明增益主要来自覆盖已有分布，而非新先验。这时继续扩到 1 亿资产的优先级应让位于提升来源多样性。</p>
+
+<h3>五 · 失效条件：许可、质量与算力的三重约束</h3>
+<p>规模并集 <span class="math">\mathcal{D}_{\mathrm{XL}}=\bigcup_{s\in\mathcal{S}}\mathcal{D}_s</span> 的第一个硬约束是许可。不同子集的版权条款不一致，合并训练前要按许可过滤，过滤会削掉一部分规模，且过滤规则随来源变化。工程上要把许可作为数据表的字段，训练采样时按许可白名单取子集，而不是先合并再补救。失败模式是许可污染：模型权重里混入不可再分发数据，下游商用受限，规模收益被法律风险抵消。</p>
+<p>第二个约束是质量参差。质量函数 <span class="math">\mathrm{Quality}=f(|\mathcal{D}|,\mathrm{diversity},\mathrm{quality})</span> 里，质量不是标量而是多维：几何完整度、材质正确性、渲染分辨率。低质量资产进入训练会拉低有效规模 <span class="math">|\mathcal{D}|_{\mathrm{eff}}</span>。具体机制是：破损几何在渲染时产生空洞与伪影，模型把这些伪影学成先验，在干净输入上反而生成错误结构。系统代价是质量过滤需要人工或自动质检，自动质检本身是模型，有误判率。失败模式是过滤过严：把长尾类别一并滤掉，多样性下降，规模扫描曲线变平但原因被误读为“规模无效”。</p>
+<p>第三个约束是算力。渲染图规模随资产与视角数成倍增长，1 亿渲染图的存储、IO 与训练步数都线性上升。规模扫描的每一档都要重训，算力成本是档位数乘以单档成本。工程判断是：当边际收益小于单档重训成本时，应停止扩计数，转向数据质量与多样性治理。一个具体例子是第三档：资产从 1000 万扩到 1 亿，收益变小但方向仍正，此时是否继续取决于算力预算与评测分桶结果，而不是盲目追规模。</p>
+<p>三重约束共同决定有效规模的上限。把约束写成可行域：许可过滤后的子集、质量过滤后的子集、算力预算内的子集，三者交集才是可训练规模。规模决定上限这句话的工程含义是：上限由交集大小决定，而不是由并集计数决定。监控指标应落在交集上，而不是原始 <span class="|\mathcal{D}|</span>。</p>
+
+<h3>六 · 系统取值：把公式落到可监控的量</h3>
+<p>把规模项落到系统取值，需要三个可观测的量：有效规模、多样性覆盖、质量分布。有效规模用加权计数 <span class="|\mathcal{D}|_{\mathrm{eff}}=\sum_i q_i/(1+r_i)</span> 监控，每次数据合并后重算，观察其随原始计数的增速。多样性覆盖用类别熵与视角方位角直方图监控，熵不增则新增数据对先验贡献有限。质量分布用分位数监控，长尾低分位比例上升意味着过滤或重渲染的优先级提高。</p>
+<p>训练侧的系统取值是采样配额。分层采样器按来源、类别、视角配额取样，配额随规模档调整，保证各档多样性可比。评测侧的系统取值是分桶报告：同分布组、跨来源组、长尾类别组分别报告新视角指标。一个具体机制是：当同分布组提升而跨来源组不升时，把下一轮预算投向新来源采集而非计数扩张。失败模式是把原始计数当 KPI：团队追 <span class="|\mathcal{D}|</span> 增长，有效规模与多样性不涨，曲线变平后被误判为理论失效。</p>
+<p>最后落在工程判断上：规模扫描的结论不是“越大越好”，而是“有效规模与多样性覆盖共同决定上限”。给定事实里，80 万到 1000 万带来 2–3 dB 提升，1000 万到 1 亿收益变小但方向仍正，这条曲线支持继续扩容，但扩容的对象应是交集内的有效样本，而不是并集计数。系统取值应把许可白名单、质量分、重复度、多样性熵写进数据表，训练前审计，训练后分桶评测，三者闭环才能让规模项真正可计算。</p>
+<p class="paper-line">对应：theory/theory-3d-data-scaling · 第 2/3 部分</p>
