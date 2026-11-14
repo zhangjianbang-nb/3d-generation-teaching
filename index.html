@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>3D AI 生成 · 领域研究与教学站</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f1720'/%3E%3Ctext x='32' y='43' font-family='Arial,Helvetica,sans-serif' font-size='26' font-weight='700' fill='%23ffffff' text-anchor='middle'%3E3D%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <style>
 :root{
@@ -692,8 +693,8 @@ function route(){
   }
   if(page==='papers'||page==='algos') state.searchPage=page;
   view.innerHTML=fn(id);
-  var ttl=(view.querySelector('h1')||{}).textContent||'';
-  document.title=(ttl?ttl.replace(/\s+/g,' ').trim()+' · ':'')+'3D AI 生成 · 领域研究与教学站';
+  var ttl=((view.querySelector('h1')||{}).textContent||'').replace(/\s+/g,' ').trim();
+  document.title=(ttl&&ttl!=='3D AI 生成'?ttl+' · ':'')+'3D AI 生成 · 领域研究与教学站';
   var tocs=view.querySelectorAll('.long-toc');
   if(tocs.length===1){ var dh=view.querySelector('.detail-head'); if(dh) dh.parentNode.insertBefore(tocs[0],dh.nextSibling); }
   setActive(page);
